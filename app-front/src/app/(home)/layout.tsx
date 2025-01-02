@@ -1,7 +1,10 @@
+'use client'
+import { ReactNode } from 'react'
+
 export default function HomeLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
   return (
     <>
