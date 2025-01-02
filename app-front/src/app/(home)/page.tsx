@@ -10,6 +10,7 @@ export default function Home() {
           <p>current name: {state.name}</p>
           <p>current number: {state.number}</p>
           <button onClick={() => setState((prev: any) => ({...prev, number: prev.number + 1}))}>+1</button>
+          <p>{process.env.NEXT_PUBLIC_API_URL}</p>
       </>
   )
 }
