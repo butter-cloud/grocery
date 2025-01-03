@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
@@ -17,9 +17,16 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        log.info("Adding product: {}", product);
+    @GetMapping("/all")
+    public Iterable<Product> getAllProducts() {
+        log.info("Getting all products");
+        return productService.getAllProducts();
+    }
+
+    @PostMapping("/new")
+    public Product addNewProduct(@RequestBody Product product) {
+        log.info("Adding product name: {}", product.getName());
+        log.info("Adding product price: {}", product.getPrice());
         return productService.addProduct(product);
     }
 }

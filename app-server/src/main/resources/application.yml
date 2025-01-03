@@ -3,7 +3,7 @@ spring:
     name: app-server
 
   datasource:
-    url: jdbc:postgresql://db-buttercookie.c5m0icyk0ujr.ap-northeast-2.rds.amazonaws.com:5432/postgres
+    url: jdbc:postgresql://127.0.0.1:5431/postgres
     driverClassName: org.postgresql.Driver
     username: buttercookie
     password: mettredulce
