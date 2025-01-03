@@ -25,3 +25,8 @@ logging:
     com.grocery.app_server: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+server:
+  servlet:
+    session:
+      timeout: 30m
