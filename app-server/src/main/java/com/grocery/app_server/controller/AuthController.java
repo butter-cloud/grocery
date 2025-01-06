@@ -4,7 +4,10 @@ import com.grocery.app_server.entity.User;
 import com.grocery.app_server.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,8 +44,37 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok("User logged in");
+    public ResponseEntity<?> login(@RequestBody User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+
+        log.info("[AuthController] Logging in user with username: {}", username);
+
+        try {
+            String token = userService.login(username, password);
+            if (token != null) {
+                ResponseCookie cookie = ResponseCookie.from("token", token)
+                        .path("/")
+                        .httpOnly(true)
+                        .secure(false)  // Set to true in production
+                        .maxAge(3600)  // 1 hour
+                        .build();
+
+                log.info("[AuthController] login - cookie string: {}", cookie.toString());
+
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                        .body("User logged in successfully");
+            } else {
+                return ResponseEntity.status(401).body("Invalid credentials");
+            }
+        } catch (UsernameNotFoundException e) {
+            log.error("User not found", e);
+            return ResponseEntity.status(401).body("User not found");
+        } catch (Exception e) {
+            log.error("Error logging in user", e);
+            return ResponseEntity.status(500).body("Error logging in user");
+        }
     }
 
 }

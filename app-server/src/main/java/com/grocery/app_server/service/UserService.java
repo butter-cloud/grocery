@@ -2,6 +2,7 @@ package com.grocery.app_server.service;
 
 import com.grocery.app_server.entity.User;
 import com.grocery.app_server.repository.UserRepository;
+import com.grocery.app_server.util.JwtUtil;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,9 +15,11 @@ import java.util.Collections;
 @Service
 public class UserService implements UserDetailsService {
 
+    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(JwtUtil jwtUtil, UserRepository userRepository) {
+        this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
     }
 
@@ -39,5 +42,14 @@ public class UserService implements UserDetailsService {
                 user.getPassword(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))  // 역할을 권한으로 변환
         );
+    }
+
+    public String login(String username, String password) {
+        UserDetails userDetails = loadUserByUsername(username);
+        if (userDetails.getPassword().equals(password)) {
+            return jwtUtil.generateToken(username);
+        } else {
+            return null;
+        }
     }
 }
