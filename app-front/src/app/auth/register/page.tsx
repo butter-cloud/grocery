@@ -11,13 +11,13 @@ export default function Register() {
   const handleRegister = async (e: FormEvent) => {
     console.log('Register', username, password, role)
     e.preventDefault()
-
+    const data = {
+      username: username,
+      password: password,
+      role: role,
+    }
     try {
-      const res = await api.post('/auth/register', {
-        username,
-        password,
-        role,
-      })
+      const res = await api.post('/auth/register', data)
       window.location.replace('/auth/login')
     } catch (error) {
       console.log('Error', error)

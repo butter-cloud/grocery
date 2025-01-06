@@ -7,7 +7,7 @@ interface TypeGroceryState {
 
 interface StateContextType {
   state: TypeGroceryState
-  setState: React.Dispatch<React.SetStateAction<any>>
+  setState: React.Dispatch<React.SetStateAction<TypeGroceryState>>
 }
 
 const StateContext = createContext<StateContextType | undefined>(undefined)
@@ -25,12 +25,12 @@ interface StateProviderProps {
 }
 
 const initialState: TypeGroceryState = {
-  name: "new name",
-  number: 0
+  name: 'new name',
+  number: 0,
 }
 
 export const StateProvider = ({ children }: StateProviderProps) => {
-  const [state, setState] = useState<any>(initialState)
+  const [state, setState] = useState<TypeGroceryState>(initialState)
 
   return (
     <StateContext.Provider value={{ state, setState }}>
