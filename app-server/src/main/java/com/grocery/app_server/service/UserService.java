@@ -3,6 +3,8 @@ package com.grocery.app_server.service;
 import com.grocery.app_server.entity.User;
 import com.grocery.app_server.repository.UserRepository;
 import com.grocery.app_server.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +16,8 @@ import java.util.Collections;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
@@ -46,8 +50,13 @@ public class UserService implements UserDetailsService {
 
     public String login(String username, String password) {
         UserDetails userDetails = loadUserByUsername(username);
+
+        log.info("[UserService] login - userDetails.getAuthorities : {}", userDetails.getAuthorities().toString());
+        log.info("[UserService] login - userDetails.getUsername : {}", userDetails.getUsername());
+        log.info("[UserService] login - userDetails.getPassword : {}", userDetails.getPassword());
+
         if (userDetails.getPassword().equals(password)) {
-            return jwtUtil.generateToken(username);
+            return jwtUtil.generateAccessToken(userDetails.getUsername(), userDetails.getAuthorities().toString());
         } else {
             return null;
         }

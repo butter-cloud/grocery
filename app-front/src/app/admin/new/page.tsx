@@ -24,9 +24,14 @@ export default function New() {
   }
 
   const getAllProducts = () => {
-    api.get('/product/all').then((res) => {
-      setProducts(res.data)
-    })
+    api
+      .get('/product/all')
+      .then((res) => {
+        setProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   useEffect(() => {
