@@ -1,11 +1,6 @@
-import Cookies from "js-cookie";
 
 export function setAccessToken(accessToken: string) {
-    Cookies.set('accessToken', accessToken, {
-        secure: true,
-        sameSite: 'strict',
-        path: '/',
-    })
+    setCookie('accessToken', accessToken, 3600)
 }
 
 export function setCookie(name: string, value: string, expire: number) {

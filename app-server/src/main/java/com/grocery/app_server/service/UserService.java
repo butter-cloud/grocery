@@ -2,7 +2,6 @@ package com.grocery.app_server.service;
 
 import com.grocery.app_server.entity.User;
 import com.grocery.app_server.repository.UserRepository;
-import com.grocery.app_server.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,17 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
+import java.util.Map;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
-    public UserService(JwtUtil jwtUtil, UserRepository userRepository) {
-        this.jwtUtil = jwtUtil;
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -48,16 +46,26 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public String login(String username, String password) {
-        UserDetails userDetails = loadUserByUsername(username);
+    public Map<String, String> loginUser(String username, String password, TokenService tokenService) {
 
-        log.info("[UserService] login - userDetails.getAuthorities : {}", userDetails.getAuthorities().toString());
-        log.info("[UserService] login - userDetails.getUsername : {}", userDetails.getUsername());
-        log.info("[UserService] login - userDetails.getPassword : {}", userDetails.getPassword());
+        // DB 유저 정보 조회
+        try {
+            UserDetails userFromDB = loadUserByUsername(username);
 
-        if (userDetails.getPassword().equals(password)) {
-            return jwtUtil.generateAccessToken(userDetails.getUsername(), userDetails.getAuthorities().toString());
-        } else {
+            // userFromDB empty check
+            if (userFromDB != null) {
+
+                // check password
+                if (userFromDB.getPassword().equals(password)) {
+                    String role = userFromDB.getAuthorities().iterator().next().getAuthority();
+                    return tokenService.createTokens(username, role);
+                }
+            }
+            log.error("[UserService] login - User not found with username: {}", username);
+            return null;
+
+        } catch (UsernameNotFoundException e) {
+            log.error("[UserService] login - UsernameNotFoundException : {}", e.getMessage());
             return null;
         }
     }

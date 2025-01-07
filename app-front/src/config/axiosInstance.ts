@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { setCookie } from '@/util/CookieHelper'
+import {setAccessToken, setCookie} from '@/util/CookieHelper'
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -52,7 +52,7 @@ api.interceptors.response.use(
         const newAccessToken = refreshResponse.data.accessToken
 
         console.log('newAccessToken: ', newAccessToken)
-        setCookie('accessToken', newAccessToken, 3600)
+        setAccessToken(newAccessToken)
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
 
