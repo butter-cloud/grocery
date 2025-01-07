@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import {setCookie} from "@/util/CookieHelper";
+import { setCookie } from '@/util/CookieHelper'
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -36,8 +36,9 @@ api.interceptors.response.use(
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry
     ) {
-
-      console.log(`interceptor error ${error.response?.status} - refresh trying ...`)
+      console.log(
+        `interceptor error ${error.response?.status} - refresh trying ...`,
+      )
       originalRequest._retry = true
 
       try {
@@ -46,7 +47,7 @@ api.interceptors.response.use(
           { withCredentials: true },
         )
 
-        console.log("refresh response body : ", refreshResponse.data)
+        console.log('refresh response body : ', refreshResponse.data)
 
         const newAccessToken = refreshResponse.data.accessToken
 
@@ -59,7 +60,7 @@ api.interceptors.response.use(
         return api(originalRequest)
       } catch (refreshError) {
         console.error('Token refresh failed', refreshError)
-        // window.location.href = '/auth/login'
+        window.location.href = '/auth/login'
         return Promise.reject(refreshError)
       }
     }

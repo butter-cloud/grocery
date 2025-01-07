@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import api from '@/config/axiosInstance'
-import Cookies from "js-cookie";
-import {setAccessToken} from "@/util/CookieHelper";
+import { setAccessToken } from '@/util/CookieHelper'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -29,7 +28,6 @@ export default function Login() {
       setAccessToken(res.data.accessToken)
 
       window.location.replace('/')
-
     } catch (error) {
       console.log('Error', error)
     }

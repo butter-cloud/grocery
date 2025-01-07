@@ -4,13 +4,13 @@ import type { NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
   console.log('@ middleware working!')
 
-    const accessToken = req.cookies.get('accessToken')?.value
+  const accessToken = req.cookies.get('accessToken')?.value
 
-    if (!accessToken) {
-      return NextResponse.redirect(new URL('/auth/login', req.url))
-    }
+  if (!accessToken) {
+    return NextResponse.redirect(new URL('/auth/login', req.url))
+  }
 
-    NextResponse.next()
+  NextResponse.next()
 }
 
 export const config = {
