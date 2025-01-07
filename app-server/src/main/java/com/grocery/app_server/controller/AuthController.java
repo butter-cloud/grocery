@@ -3,18 +3,16 @@ package com.grocery.app_server.controller;
 import com.grocery.app_server.entity.User;
 import com.grocery.app_server.service.UserService;
 import com.grocery.app_server.util.JwtUtil;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.Name;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -64,13 +62,6 @@ public class AuthController {
             if (accessToken != null) {
                 String refreshToken = jwtUtil.generateRefreshToken(username);
 
-                ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessToken)
-                        .path("/")
-                        .httpOnly(true)
-                        .secure(false)  // Set to true in production
-                        .maxAge(3600)  // 1 hour
-                        .build();
-
                 ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
                         .path("/")
                         .httpOnly(true)
@@ -78,10 +69,12 @@ public class AuthController {
                         .maxAge(604800)
                         .build();
 
+                Map<String, String> response = new HashMap<>();
+                response.put("accessToken", accessToken);
+
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
                         .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
-                        .body("User logged in successfully");
+                        .body(response);
             } else {
                 return ResponseEntity.status(401).body("Invalid credentials");
             }
@@ -94,21 +87,41 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestHeader(value = "Authorization", required = false) String refreshToken) {
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refresh(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        log.info("[AuthController] refresh - refreshToken : {}", refreshToken);
 
-        log.info("[AuthController] refresh - refreshToken check");
-        log.info("[AuthController] refreshToken : {} ", refreshToken);
+        if (refreshToken != null) {
+            try {
+                // refresh token 유효성 검증
+                boolean isTokenValid = jwtUtil.validateToken(refreshToken, jwtUtil.extractUsername(refreshToken));
 
-        try {
-            String tokenString = refreshToken.split(" ")[1];
-            log.info("[AuthController] tokenString : {} ", tokenString);
-        } catch (Exception e) {
-            log.error("Error splitting token", e);
-            return ResponseEntity.status(401).body("Invalid refresh token");
+                if (isTokenValid) {
+                    String username = jwtUtil.extractUsername(refreshToken);
+                    String newAccessToken = jwtUtil.generateAccessToken(username, userService.getRole(username));
+                    String newRefreshToken = jwtUtil.generateRefreshToken(username);
+
+                    log.info("[AuthController] refresh - newAccessToken : {}", newAccessToken);
+
+                    Map<String, String> response = new HashMap<>();
+                    response.put("accessToken", newAccessToken);
+
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.SET_COOKIE, ResponseCookie.from("refreshToken", refreshToken)
+                                    .path("/")
+                                    .httpOnly(true)
+                                    .secure(false)
+                                    .maxAge(604800)
+                                    .build().toString())
+                            .body(response);
+                }
+            } catch (Exception e) {
+                log.error("Error validating refresh token", e);
+                return ResponseEntity.status(401).body(null);
+            }
         }
-        log.info("[AuthController] refresh - refreshToken check end");
-        return ResponseEntity.status(200).body("Valid refresh token");
+
+        return ResponseEntity.status(401).body(null);
     }
 
 }

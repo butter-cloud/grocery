@@ -61,4 +61,11 @@ public class UserService implements UserDetailsService {
             return null;
         }
     }
+
+    public String getRole(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        return user.getRole();
+    }
 }

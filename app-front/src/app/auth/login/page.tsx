@@ -2,24 +2,34 @@
 
 import { useState } from 'react'
 import api from '@/config/axiosInstance'
+import Cookies from "js-cookie";
+import {setAccessToken} from "@/util/CookieHelper";
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState('USER')
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     const data = {
       username: username,
       password: password,
-      role: role,
     }
     try {
       const res = await api.post('/auth/login', data)
+
+      if (res.status !== 200) {
+        console.log('Login failed')
+        alert('Login failed')
+        return
+      }
+
       console.log('Login successful')
-      console.log('data', res.data)
-      // Redirect or handle successful login
+      alert('Login successful')
+      setAccessToken(res.data.accessToken)
+
+      window.location.replace('/')
+
     } catch (error) {
       console.log('Error', error)
     }
@@ -40,10 +50,6 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="USER">User</option>
-          <option value="ADMIN">Admin</option>
-        </select>
         <button type="submit">Login</button>
       </form>
     </>
