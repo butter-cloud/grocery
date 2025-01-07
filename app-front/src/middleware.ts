@@ -4,6 +4,10 @@ import type { NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
   console.log('@ middleware working!')
 
+  if (req.nextUrl.pathname === '/') {
+    return NextResponse.next()
+  }
+
   const accessToken = req.cookies.get('accessToken')?.value
 
   if (!accessToken) {
@@ -14,5 +18,8 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!auth|_next/static|_next/image|.*\\.png$).*)'], // '/auth'로 시작하는 경로 제외
+  matcher: [
+    // Exclude paths starting with /auth, _next/static, _next/image, image files, favicon.ico
+    '/((?!auth|_next/static|_next/image|.*\\.png$|favicon.ico).*)',
+  ],
 }
