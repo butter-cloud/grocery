@@ -62,8 +62,11 @@ public class AuthController {
                 Map<String, String> response = new HashMap<>();
                 response.put("accessToken", tokens.get("accessToken"));
 
+                log.info("[AuthController] accessToken : {}", tokens.get("accessToken"));
+                log.info("[AuthController] refreshTokens : {}", tokens.get("refreshToken"));
+
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.SET_COOKIE, tokens.get("refreshToken"))
+                        .header(HttpHeaders.SET_COOKIE, tokenService.refreshTokenCookieString(tokens.get("refreshToken")))
                         .body(response);
             } else {
                 return ResponseEntity.status(401).body("Invalid username or password");
