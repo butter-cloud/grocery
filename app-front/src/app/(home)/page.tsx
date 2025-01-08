@@ -16,7 +16,7 @@ export default function Home() {
       >
         +1
       </button>
-      <p>{process.env.NEXT_PUBLIC_API_URL}</p>
+      <p>API: {process.env.NEXT_PUBLIC_API_URL}</p>
     </>
   )
 }

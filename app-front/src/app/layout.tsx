@@ -1,6 +1,7 @@
 'use client'
 import { StateProvider } from '@/context/context'
 import { ReactNode } from 'react'
+import NavBar from '@/ui/component/NavBar'
 
 export default function RootLayout({
   children,
@@ -11,7 +12,7 @@ export default function RootLayout({
     <StateProvider>
       <html>
         <body>
-          <div>Root Layout</div>
+          <NavBar />
           {children}
         </body>
       </html>
