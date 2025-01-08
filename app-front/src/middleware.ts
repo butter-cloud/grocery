@@ -11,6 +11,7 @@ export async function middleware(req: NextRequest) {
   const accessToken = req.cookies.get('accessToken')?.value
 
   if (!accessToken) {
+    console.log("[middleware] accessToken not found - redirect to /auth/login")
     return NextResponse.redirect(new URL('/auth/login', req.url))
   }
 
