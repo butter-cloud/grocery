@@ -1,12 +1,22 @@
-'use client'
+import axios from 'axios'
+import { cookies } from 'next/headers'
+import ProductListPage from '@/ui/pages/ProductListPage'
 
-import ProductCard from '@/ui/component/ProductCard'
+export default async function productListServer() {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get('accessToken')?.value.toString()
 
-export default function AllProducts() {
+  const res = await axios.get('http://localhost:8080/product/all', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      WithCredentials: true,
+    },
+  })
+
   return (
     <>
-      <ProductCard />
-      <ProductCard />
+      <ProductListPage data={res.data} />
     </>
   )
 }

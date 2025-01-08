@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 const Wrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   margin: 0 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -15,13 +15,22 @@ const ProductImage = styled.img`
   height: 100%;
 `
 
-export default function ProductCard() {
+interface ProductCardProps {
+  imageUrl?: string
+  name: string
+  price: string
+}
+
+export default function ProductCard({
+  product,
+}: Readonly<{ product: ProductCardProps }>) {
+  const { name, price } = product
   return (
     <>
       <Wrapper>
-        <ProductImage src="https://via.placeholder.com/150" alt="product" />
-        <h3>Product Name</h3>
-        <p>$100</p>
+        <ProductImage src={'/product.png'} alt={name} />
+        <h3>{name}</h3>
+        <p>{price}</p>
       </Wrapper>
     </>
   )
