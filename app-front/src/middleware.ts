@@ -4,18 +4,21 @@ import type { NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
   console.log('@ middleware working!')
 
+  const headers = new Headers(req.headers)
+  headers.set('x-current-path', req.nextUrl.pathname)
+
   if (req.nextUrl.pathname === '/') {
-    return NextResponse.next()
+    return NextResponse.next({ headers })
   }
 
   const accessToken = req.cookies.get('accessToken')?.value
 
   if (!accessToken) {
-    console.log("[middleware] accessToken not found - redirect to /auth/login")
+    console.log('[middleware] accessToken not found - redirect to /auth/login')
     return NextResponse.redirect(new URL('/auth/login', req.url))
   }
 
-  NextResponse.next()
+  return NextResponse.next({ headers })
 }
 
 export const config = {

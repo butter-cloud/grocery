@@ -27,7 +27,9 @@ export default function Login() {
       alert('Login successful')
       setAccessToken(res.data.accessToken)
 
-      window.location.replace('/')
+      const params = new URLSearchParams(window.location.search)
+      const redirectUrl = params.get('redirect') || '/' // redirect 값이 없으면 기본값으로 '/' 사용
+      window.location.replace(redirectUrl)
     } catch (error) {
       console.log('Error', error)
     }

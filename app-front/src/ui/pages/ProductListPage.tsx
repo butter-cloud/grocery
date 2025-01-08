@@ -29,14 +29,18 @@ const ProductGrid = styled.div`
 
 export default function ProductListPage({ data }) {
   console.log('data:', data)
-  const productList = data
+  const productList = data || []
 
   return (
     <>
       <ProductGrid>
-        {productList.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        {productList.length > 0 ? (
+          productList.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        ) : (
+          <>상품이 없습니다.</>
+        )}
       </ProductGrid>
     </>
   )
