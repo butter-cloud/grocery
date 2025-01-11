@@ -4,7 +4,8 @@ import sampleProduct from '../../../public/data/sampleProduct.json'
 import PlusIcon from '@/ui/icons/PlusIcon'
 import { theme } from '@/styles/theme'
 import MinusIcon from '@/ui/icons/MinusIcon'
-import useProductDetailPageProps from '@/hooks/useProductDetailPageProps'
+import { useDispatch } from 'react-redux'
+import { openModal } from '@/util/redux/modalSlice'
 
 const Wrapper = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ const QuantityDisplay = styled.div`
 
 export default function ProductDetailText(props: { product: TypeProduct }) {
   const [quantity, setQuantity] = useState(1)
-  const { addItemToCart } = useProductDetailPageProps(props.product)
+  const dispatch = useDispatch()
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1)
@@ -91,6 +92,11 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
     if (quantity > 1) {
       setQuantity(quantity - 1)
     }
+  }
+
+  const addItemToCart = () => {
+    console.log('Add item to cart')
+    dispatch(openModal())
   }
 
   return (

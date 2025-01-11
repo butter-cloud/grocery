@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <MainImage src={'/peach.jpg'} />
+      <MainImage src={'/image/peach.jpg'} />
       {/*<p>current name: {state.name}</p>*/}
       {/*<p>current number: {state.number}</p>*/}
       {/*<button*/}
