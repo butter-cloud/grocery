@@ -9,7 +9,7 @@ const Text = styled.div<TextProps>`
   font-family: serif;
   font-weight: 900;
   font-size: ${(props) => props.fontSize || '32px'};
-  color: ${(props) => props.color || '#333'};
+  color: ${(props) => props.color || props.theme.colors.primary};
 `
 export default function Logo(props: TextProps) {
   const { fontSize, color } = props

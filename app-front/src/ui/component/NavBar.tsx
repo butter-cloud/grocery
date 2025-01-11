@@ -61,7 +61,7 @@ export default function NavBar() {
           </Button>
           {isMenuOpen ? <DesktopMenu /> : <></>}
           <NavLink href="/">
-            <Logo fontSize={'40px'} color={'#eef448'} />
+            <Logo fontSize={'40px'} />
           </NavLink>
 
           <NavLinks>

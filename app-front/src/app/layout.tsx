@@ -4,6 +4,8 @@ import { ReactNode } from 'react'
 import './globals.css'
 import StyledComponentsRegistry from '@/util/registry'
 import NavBar from '@/ui/component/NavBar'
+import { ThemeProvider } from 'styled-components'
+import { theme } from '@/styles/theme'
 
 export default function RootLayout({
   children,
@@ -14,10 +16,12 @@ export default function RootLayout({
     <StateProvider>
       <html>
         <body>
-          <StyledComponentsRegistry>
-            <NavBar />
-            {children}
-          </StyledComponentsRegistry>
+          <ThemeProvider theme={theme}>
+            <StyledComponentsRegistry>
+              <NavBar />
+              {children}
+            </StyledComponentsRegistry>
+          </ThemeProvider>
         </body>
       </html>
     </StateProvider>

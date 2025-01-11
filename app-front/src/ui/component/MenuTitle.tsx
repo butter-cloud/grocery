@@ -4,7 +4,7 @@ const Text = styled.div`
   font-family: sans-serif;
   font-size: 4rem;
   font-weight: bold;
-  color: #333;
+  color: ${({ theme }) => theme.colors.primary};
   margin: 0 0 2rem 1rem;
 `
 export default function MenuTitle(props: { title: string }) {

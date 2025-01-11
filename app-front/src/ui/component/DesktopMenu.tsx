@@ -6,7 +6,7 @@ const Menu = styled.div`
   left: 0;
   width: 300px;
   height: 100vh;
-  background-color: #f6fb7a;
+  background-color: ${({ theme }) => theme.colors.primary};
   padding-top: 100px;
   display: flex;
   flex-direction: column;
