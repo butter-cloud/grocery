@@ -23,7 +23,8 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/admin/:path*',
     // Exclude paths starting with /auth, _next/static, _next/image, image files, favicon.ico
-    '/((?!auth|_next/static|_next/image|.*\\.png$|favicon.ico).*)',
+    // '/((?!auth|_next/static|_next/image|.*\\.png$|favicon.ico).*)',
   ],
 }

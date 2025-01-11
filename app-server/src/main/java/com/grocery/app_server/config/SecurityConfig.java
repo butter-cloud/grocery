@@ -42,9 +42,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // CORS preflight 요청 허용
+                                .requestMatchers("/admin/**").authenticated() // admin/** 경로 인증 요구
+                                .anyRequest().permitAll() // 그 외 모든 경로 허용
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement
