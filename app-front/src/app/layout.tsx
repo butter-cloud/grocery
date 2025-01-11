@@ -2,6 +2,7 @@
 import { StateProvider } from '@/context/context'
 import { ReactNode } from 'react'
 import NavBar from '@/ui/component/NavBar'
+import './globals.css'
 
 export default function RootLayout({
   children,

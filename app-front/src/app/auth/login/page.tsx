@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import api from '@/config/axiosInstance'
 import { setAccessToken } from '@/util/CookieHelper'
+import { Button, Container, Input, Title, Wrapper } from '@/ui/style/authStyle'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -37,21 +38,26 @@ export default function Login() {
 
   return (
     <>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+      <Container>
+        <form onSubmit={handleLogin}>
+          <Wrapper>
+            <Title>Log In</Title>
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit">Login</Button>
+          </Wrapper>
+        </form>
+      </Container>
     </>
   )
 }

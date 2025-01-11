@@ -1,6 +1,7 @@
 'use client'
 import { useMediaQuery } from 'react-responsive'
 import { useEffect, useState } from 'react'
+import DesktopNavBar from "@/ui/component/DesktopNavBar";
 
 export default function NavBar() {
   const [hasMounted, setHasMounted] = useState(false)
@@ -18,7 +19,7 @@ export default function NavBar() {
 
   return (
     <>
-      {isDesktop && <h1>Desktop nav bar</h1>}
+      {isDesktop && <DesktopNavBar/>}
       {isMobile && <h1>Mobile nav bar</h1>}
     </>
   )
