@@ -67,22 +67,15 @@ const ProductPrice = styled.div`
   color: ${({ theme }) => theme.colors.primary};
 `
 
-interface ProductCardProps {
-  id: number
-  imageUrl?: string
-  name: string
-  price: string
-}
-
 export default function ProductCard({
   product,
-}: Readonly<{ product: ProductCardProps }>) {
+}: Readonly<{ product: TypeProduct }>) {
   const { id, name, price } = product
   return (
     <>
       <Wrapper href={`/product/detail/${id}`}>
         <ProductImageWrapper>
-          <ProductImage src="/coffee.png" alt="Product" />
+          <ProductImage src="/image/coffee.png" alt="Product" />
           <AddToCartButton>
             <AddToCartText>Add to Cart</AddToCartText>
             <AddToCartIcon>+</AddToCartIcon>

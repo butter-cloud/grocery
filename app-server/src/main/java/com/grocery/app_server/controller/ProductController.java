@@ -29,4 +29,10 @@ public class ProductController {
         log.info("Adding product price: {}", product.getPrice());
         return productService.addProduct(product);
     }
+
+    @GetMapping("/{id}")
+    public Product getProductDetails(@PathVariable Long id) {
+        log.info("Getting product details for id: {}", id);
+        return productService.getProductDetails(id);
+    }
 }
