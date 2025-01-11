@@ -11,6 +11,7 @@ const Menu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  z-index: 99;
 `
 
 const MenuBar = styled.a`
@@ -23,7 +24,7 @@ export default function DesktopMenu() {
   return (
     <>
       <Menu>
-        <MenuBar href={'/product/all'}>BestSeller</MenuBar>
+        <MenuBar href={'/product/best'}>BestSeller</MenuBar>
         <MenuBar href={'/product/all'}>All Products</MenuBar>
       </Menu>
     </>

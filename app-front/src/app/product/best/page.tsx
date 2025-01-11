@@ -5,7 +5,7 @@ import ProductListPage from '@/ui/pages/ProductListPage'
 import { useEffect, useState } from 'react'
 import MenuTitle from '@/ui/component/MenuTitle'
 
-export default function ProductAll() {
+export default function ProductBest() {
   const [data, setData] = useState({})
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function ProductAll() {
 
   return (
     <>
-      <MenuTitle title={'All Products'} />
+      <MenuTitle title={'BestSellers'} />
       <ProductListPage data={data ?? {}} />
     </>
   )

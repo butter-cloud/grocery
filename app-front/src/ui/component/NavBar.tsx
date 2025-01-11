@@ -1,26 +1,76 @@
-'use client'
-import { useMediaQuery } from 'react-responsive'
-import { useEffect, useState } from 'react'
-import DesktopNavBar from '@/ui/component/DesktopNavBar'
+import styled from 'styled-components'
+import { useState } from 'react'
+import Logo from '@/ui/component/Logo'
+import DesktopMenu from '@/ui/component/DesktopMenu'
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 80px;
+`
+
+const Nav = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+`
+
+const NavLinks = styled.div`
+  display: flex;
+  gap: 1rem;
+`
+
+const NavLink = styled.a`
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  &:hover {
+    color: #f6fb7a;
+  }
+`
+
+const Button = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 50px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #bcbbbb;
+  }
+`
 
 export default function NavBar() {
-  const [hasMounted, setHasMounted] = useState(false)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  const isDesktop = useMediaQuery({ minWidth: 1200 })
-  const isMobile = useMediaQuery({ maxWidth: 1200 })
-
-  if (!hasMounted) {
-    return null
-  }
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
     <>
-      {isDesktop && <DesktopNavBar />}
-      {isMobile && <h1>Mobile nav bar</h1>}
+      <Wrapper>
+        <Nav>
+          <Button
+            onClick={() => {
+              setIsMenuOpen(!isMenuOpen)
+            }}
+            style={{ zIndex: 999 }}
+          >
+            Menu
+          </Button>
+          {isMenuOpen ? <DesktopMenu /> : <></>}
+          <NavLink href="/">
+            <Logo fontSize={'40px'} color={'#eef448'} />
+          </NavLink>
+
+          <NavLinks>
+            <NavLink href="/auth/login">
+              <Button>Cart</Button>
+            </NavLink>
+          </NavLinks>
+        </Nav>
+      </Wrapper>
     </>
   )
 }

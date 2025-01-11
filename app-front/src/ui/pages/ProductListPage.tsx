@@ -6,7 +6,6 @@ import styled from 'styled-components'
 const ProductGrid = styled.div`
   display: grid;
   gap: 20px;
-  padding: 20px;
 
   /* 기본 한 줄에 4개 */
   grid-template-columns: repeat(4, 1fr);

@@ -1,9 +1,9 @@
 'use client'
 import { StateProvider } from '@/context/context'
 import { ReactNode } from 'react'
-import NavBar from '@/ui/component/NavBar'
 import './globals.css'
 import StyledComponentsRegistry from '@/util/registry'
+import NavBar from '@/ui/component/NavBar'
 
 export default function RootLayout({
   children,
@@ -14,8 +14,10 @@ export default function RootLayout({
     <StateProvider>
       <html>
         <body>
-          <NavBar />
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <StyledComponentsRegistry>
+            <NavBar />
+            {children}
+          </StyledComponentsRegistry>
         </body>
       </html>
     </StateProvider>
