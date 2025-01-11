@@ -3,6 +3,7 @@ import { StateProvider } from '@/context/context'
 import { ReactNode } from 'react'
 import NavBar from '@/ui/component/NavBar'
 import './globals.css'
+import StyledComponentsRegistry from '@/util/registry'
 
 export default function RootLayout({
   children,
@@ -14,7 +15,7 @@ export default function RootLayout({
       <html>
         <body>
           <NavBar />
-          {children}
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </body>
       </html>
     </StateProvider>
