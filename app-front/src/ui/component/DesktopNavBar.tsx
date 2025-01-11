@@ -1,10 +1,13 @@
 import styled from 'styled-components'
-import {useEffect, useState} from 'react'
-import api from "@/config/axiosInstance";
+import { useEffect, useState } from 'react'
+import Logo from '@/ui/component/Logo'
+import DesktopMenu from '@/ui/component/DesktopMenu'
 
 const Wrapper = styled.div`
   width: 100%;
-  background-color: #29cf49;
+  height: 80px;
+  position: fixed;
+  //background-color: #29cf49;
 `
 
 const Nav = styled.nav`
@@ -12,13 +15,6 @@ const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-`
-
-const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  font-style: italic;
 `
 
 const NavLinks = styled.div`
@@ -33,7 +29,7 @@ const NavLink = styled.a`
   display: flex;
   align-items: center;
   &:hover {
-    color: #007bff;
+    color: #f6fb7a;
   }
 `
 
@@ -42,7 +38,7 @@ const Button = styled.button`
   background-color: white;
   color: black;
   border: 1px solid grey;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
 
   &:hover {
@@ -52,22 +48,26 @@ const Button = styled.button`
 
 export default function DesktopNavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
     <>
       <Wrapper>
         <Nav>
+          <Button
+            onClick={() => {
+              setIsMenuOpen(!isMenuOpen)
+            }}
+            style={{ zIndex: 1 }}
+          >
+            Menu
+          </Button>
+          {isMenuOpen ? <DesktopMenu /> : <></>}
           <NavLink href="/">
-            <Logo>Grocery Store</Logo>
+            <Logo fontSize={'40px'} color={'#eef448'} />
           </NavLink>
-          <NavLinks>
-            <NavLink href="/product/all">Products</NavLink>
-            <NavLink href="/about">About</NavLink>
-            <NavLink href="/contact">Contact</NavLink>
 
-            <NavLink href="/auth/register">
-              <Button>Sign Up</Button>
-            </NavLink>
+          <NavLinks>
             <NavLink href="/auth/login">
               <Button>Log In</Button>
             </NavLink>

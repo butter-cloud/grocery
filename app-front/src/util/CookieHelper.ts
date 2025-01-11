@@ -4,7 +4,7 @@ export function setAccessToken(accessToken: string) {
 
 export function setCookie(name: string, value: string, expire: number) {
   const expires = new Date()
-  expires.setTime(expires.getTime() + expire * 1000)  // JavaScript's setTime() method requires milliseconds
+  expires.setTime(expires.getTime() + expire * 1000) // JavaScript's setTime() method requires milliseconds
   document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`
 }
 
