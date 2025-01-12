@@ -1,13 +1,8 @@
 import styled from 'styled-components'
-import { useState } from 'react'
 import sampleProduct from '../../../../public/data/sampleProduct.json'
-import PlusIcon from '@/ui/icons/PlusIcon'
-import { theme } from '@/styles/theme'
-import MinusIcon from '@/ui/icons/MinusIcon'
 import { useDispatch } from 'react-redux'
-import { openModal } from '@/util/redux/modalSlice'
-import { ModalType } from '@/types/ModalType'
-import api from '@/config/axiosInstance'
+import QuantityContainer from '@/ui/component/productDetail/QuantityContainer'
+import useProductDetailPageProps from '@/hook/useProductDetailPageProps'
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,68 +47,20 @@ const AddToCartButton = styled.button`
     border: 1px solid ${({ theme }) => theme.colors.primary}; /* Add border */
   }
 `
-const QuantityWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`
-
-const QuantitySelector = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  gap: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  border-radius: 50px;
-  width: 140px;
-  height: 45px;
-`
-
-const QuantityButton = styled.button`
-  border: none;
-  font-size: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
-  cursor: pointer;
-  background-color: transparent;
-  padding-bottom: 7px;
-`
-
-const QuantityDisplay = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-`
 
 export default function ProductDetailText(props: { product: TypeProduct }) {
-  const [quantity, setQuantity] = useState(1)
   const dispatch = useDispatch()
-
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1)
-  }
-
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1)
-    }
-  }
+  const {
+    quantity,
+    increaseQuantity,
+    decreaseQuantity,
+    addToLocalCart,
+    addToServerCart,
+  } = useProductDetailPageProps()
 
   const addItemToCart = () => {
-    api
-      .post('/cart/add', {
-        id: props.product.id,
-        name: props.product.name,
-      })
-      .then((res) => {
-        console.log(res)
-        dispatch(
-          openModal({
-            modalType: ModalType.CART_SUCCESS,
-            content: {},
-          }),
-        )
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    addToLocalCart(dispatch, props)
+    // addToServerCart(dispatch, props)
   }
 
   return (
@@ -130,19 +77,11 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
         <ProductPrice>
           Total Price — {props.product.price * quantity} ￦
         </ProductPrice>
-
-        <QuantityWrapper>
-          <QuantitySelector>
-            <QuantityButton onClick={decreaseQuantity}>
-              <MinusIcon color={theme.colors.primary} />
-            </QuantityButton>
-            <QuantityDisplay>{quantity}</QuantityDisplay>
-            <QuantityButton onClick={increaseQuantity}>
-              <PlusIcon color={theme.colors.primary} />
-            </QuantityButton>
-          </QuantitySelector>
-        </QuantityWrapper>
-
+        <QuantityContainer
+          quantity={quantity}
+          increaseQuantity={increaseQuantity}
+          decreaseQuantity={decreaseQuantity}
+        />
         <AddToCartButton onClick={addItemToCart}>Add to cart +</AddToCartButton>
       </Wrapper>
     </>

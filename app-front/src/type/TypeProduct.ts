@@ -3,4 +3,5 @@ interface TypeProduct {
   imageUrl?: string
   name: string
   price: number
+  quantity: number
 }

@@ -1,4 +1,4 @@
-import { ModalType } from '@/types/ModalType'
+import { ModalType } from '@/type/ModalType'
 
 export type ModalState = {
   isOpen: boolean
