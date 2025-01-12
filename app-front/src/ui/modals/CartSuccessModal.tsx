@@ -1,5 +1,5 @@
 import ModalButtonContainer from '@/ui/modals/ModalButtonContainer'
-import { closeModal } from '@/redux/modalSlice'
+import { closeModal } from '@/util/redux/modalSlice'
 import { ModalText } from '@/ui/modals/Modal'
 import { useDispatch } from 'react-redux'
 

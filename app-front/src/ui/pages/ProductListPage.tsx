@@ -1,6 +1,6 @@
 'use client'
 
-import ProductCard from '@/ui/component/ProductCard'
+import ProductCard from '@/ui/component/productList/ProductCard'
 import styled from 'styled-components'
 
 const ProductGrid = styled.div`

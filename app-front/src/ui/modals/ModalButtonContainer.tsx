@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { closeModal } from '@/redux/modalSlice'
+import { closeModal } from '@/util/redux/modalSlice'
 import { useDispatch } from 'react-redux'
 
 const ButtonWrapper = styled.div`

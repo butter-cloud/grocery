@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState } from 'react'
-import Logo from '@/ui/component/Logo'
-import DesktopMenu from '@/ui/component/DesktopMenu'
+import Logo from '@/ui/component/common/Logo'
+import DesktopMenu from '@/ui/component/common/DesktopMenu'
 
 const Wrapper = styled.div`
   width: 100%;

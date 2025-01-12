@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import { useState } from 'react'
-import sampleProduct from '../../../public/data/sampleProduct.json'
+import sampleProduct from '../../../../public/data/sampleProduct.json'
 import PlusIcon from '@/ui/icons/PlusIcon'
 import { theme } from '@/styles/theme'
 import MinusIcon from '@/ui/icons/MinusIcon'
 import { useDispatch } from 'react-redux'
-import { openModal } from '@/redux/modalSlice'
+import { openModal } from '@/util/redux/modalSlice'
 import { ModalType } from '@/types/ModalType'
+import api from '@/config/axiosInstance'
 
 const Wrapper = styled.div`
   display: flex;
@@ -96,13 +97,23 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
   }
 
   const addItemToCart = () => {
-    console.log('Add item to cart')
-    dispatch(
-      openModal({
-        modalType: ModalType.CART_SUCCESS,
-        content: {},
-      }),
-    )
+    api
+      .post('/cart/add', {
+        id: props.product.id,
+        name: props.product.name,
+      })
+      .then((res) => {
+        console.log(res)
+        dispatch(
+          openModal({
+            modalType: ModalType.CART_SUCCESS,
+            content: {},
+          }),
+        )
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (

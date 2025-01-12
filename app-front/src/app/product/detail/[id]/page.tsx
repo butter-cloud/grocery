@@ -4,8 +4,8 @@ import api from '@/config/axiosInstance'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import ProductDetailImage from '@/ui/component/ProductDetailImage'
-import ProductDetailText from '@/ui/component/ProductDetailText'
+import ProductDetailImage from '@/ui/component/productDetail/ProductDetailImage'
+import ProductDetailText from '@/ui/component/productDetail/ProductDetailText'
 
 const Wrapper = styled.div`
   display: flex;
