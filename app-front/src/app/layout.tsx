@@ -8,7 +8,7 @@ import NavBar from '@/ui/component/NavBar'
 import { ThemeProvider } from 'styled-components'
 import { theme } from '@/styles/theme'
 import { Provider } from 'react-redux'
-import store from '@/util/redux/store'
+import store from '@/redux/store'
 import Modal from '@/ui/modals/Modal'
 
 export default function RootLayout({

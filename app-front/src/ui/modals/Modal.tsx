@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { RootState } from '@/util/redux/store'
-import { closeModal } from '@/util/redux/modalSlice'
+import { RootState } from '@/redux/store'
+import { closeModal } from '@/redux/modalSlice'
+import CartSuccessModal from '@/ui/modals/CartSuccessModal'
+import CartErrorModal from '@/ui/modals/CartErrorModal'
+import ErrorModal from '@/ui/modals/ErrorModal'
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -17,25 +20,54 @@ const ModalBackdrop = styled.div`
 `
 
 const ModalContent = styled.div`
-  background-color: white;
-  padding: 20px;
   width: 300px;
   text-align: center;
   z-index: 1000;
+  padding: 40px 10px 10px 10px;
+  height: 200px;
+  background-image: url('/image/modalblank.png');
+  background-size: cover; /* 또는 contain */
+  background-position: center;
+  background-repeat: no-repeat;
+`
+
+export const ModalText = styled.div`
+  padding: 20px;
+  height: 100px;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: serif;
+  font-style: italic;
 `
 
 const Modal = () => {
   const dispatch = useDispatch()
-  const isOpen = useSelector((state: RootState) => state.modal.isOpen)
+  const { isOpen, modalType, content } = useSelector(
+    (state: RootState) => state.modal,
+  )
 
   if (!isOpen) return null
+
+  const renderContent = () => {
+    switch (modalType) {
+      case 'cartSuccess':
+        return <CartSuccessModal />
+      case 'cartError':
+        return <CartErrorModal />
+      case 'error':
+        return <ErrorModal />
+      default:
+        return null
+    }
+  }
 
   return (
     <ModalBackdrop onClick={() => dispatch(closeModal())}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
-        <h2>모달 내용</h2>
-        <p>여기에 모달의 내용을 작성하세요.</p>
-        <button onClick={() => dispatch(closeModal())}>닫기</button>
+        {renderContent()}
       </ModalContent>
     </ModalBackdrop>
   )

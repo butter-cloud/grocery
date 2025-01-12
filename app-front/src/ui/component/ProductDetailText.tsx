@@ -5,7 +5,8 @@ import PlusIcon from '@/ui/icons/PlusIcon'
 import { theme } from '@/styles/theme'
 import MinusIcon from '@/ui/icons/MinusIcon'
 import { useDispatch } from 'react-redux'
-import { openModal } from '@/util/redux/modalSlice'
+import { openModal } from '@/redux/modalSlice'
+import { ModalType } from '@/types/ModalType'
 
 const Wrapper = styled.div`
   display: flex;
@@ -96,7 +97,12 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
 
   const addItemToCart = () => {
     console.log('Add item to cart')
-    dispatch(openModal())
+    dispatch(
+      openModal({
+        modalType: ModalType.CART_SUCCESS,
+        content: {},
+      }),
+    )
   }
 
   return (

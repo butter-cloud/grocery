@@ -75,7 +75,7 @@ export default function ProductCard({
     <>
       <Wrapper href={`/product/detail/${id}`}>
         <ProductImageWrapper>
-          <ProductImage src="/image/coffee.png" alt="Product" />
+          <ProductImage src="/image/apple.png" alt="Product" />
           <AddToCartButton>
             <AddToCartText>Add to Cart</AddToCartText>
             <AddToCartIcon>+</AddToCartIcon>
