@@ -4,3 +4,6 @@ spring:
     driverClassName: org.postgresql.Driver
     username: buttercookie
     password: mettredulce
+
+frontend:
+  url: https://grocery-self.vercel.app
