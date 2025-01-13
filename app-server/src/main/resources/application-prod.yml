@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://buttercookie-db.c5m0icyk0ujr.ap-northeast-2.rds.amazonaws.com:5432/postgres
+    driverClassName: org.postgresql.Driver
+    username: buttercookie
+    password: mettredulce

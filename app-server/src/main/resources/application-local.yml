@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5431/postgres
+    driverClassName: org.postgresql.Driver
+    username: buttercookie
+    password: mettredulce
