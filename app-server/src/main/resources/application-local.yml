@@ -4,3 +4,6 @@ spring:
     driverClassName: org.postgresql.Driver
     username: buttercookie
     password: mettredulce
+
+frontend:
+  url: http://localhost:3000
