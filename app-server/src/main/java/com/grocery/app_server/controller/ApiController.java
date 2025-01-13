@@ -14,6 +14,6 @@ public class ApiController {
 
     @RequestMapping("/test")
     public String test() {
-        return "webhook test";
+        return "webhook test!";
     }
 }
