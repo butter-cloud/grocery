@@ -22,23 +22,25 @@ export default function cookieHome() {
 
   useEffect(() => {
     api
-      .get('/cookie/home')
+      .get('/session/home')
       .then((res) => {
         if (res.status !== 200) {
           alert('Login Required')
-          window.location.replace('/auth/cookie/login')
+          window.location.replace('/auth/session/login')
         }
         setData(res.data)
       })
       .catch((error) => {
         console.log(error)
+        alert('Login Required')
+        window.location.replace('/auth/session/login')
       })
   }, [])
 
   const handleLogout = () => {
-    api.get('/cookie/logout').then((res) => {
+    api.get('/session/logout').then((res) => {
       if (res.status === 200) {
-        window.location.replace('/auth/cookie/login')
+        window.location.replace('/auth/session/login')
       } else {
         console.log('Logout failed')
       }
@@ -46,9 +48,14 @@ export default function cookieHome() {
   }
   return (
     <>
-      {/*<MenuTitle title={'Cookie Home!'} />*/}
-      <h3>{data ?? ''}</h3>
-      <Button onClick={handleLogout}>logout</Button>
+      {data ? (
+        <>
+          <h3>{data ?? ''}</h3>
+          <Button onClick={handleLogout}>logout</Button>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
