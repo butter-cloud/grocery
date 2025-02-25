@@ -10,11 +10,17 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/grocery
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: leejay
+    password: dltmdwl
 
   sql:
     init:
-      platform: postgresql
+      platform: mysql
 
 logging:
   level:

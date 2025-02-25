@@ -1,25 +1,29 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { useState } from 'react'
 import api from '@/config/axiosInstance'
 import { Button, Container, Input, Title, Wrapper } from '@/ui/style/authStyle'
 
-export default function Register() {
+export default function login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState('USER')
 
-  const handleRegister = async (e: FormEvent) => {
-    console.log('Register', username, password, role)
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     const data = {
-      username: username,
+      loginId: username,
       password: password,
-      role: role,
     }
     try {
-      const res = await api.post('/cookie-login/join', data)
-      window.location.replace('/auth/login')
+      const res = await api.post('/cookie/login', data)
+      if (res.status !== 200) {
+        console.log('Login failed')
+        alert('Login failed')
+        return
+      }
+      console.log('Login successful')
+      alert('Login successful')
+      window.location.replace('/auth/cookie/home')
     } catch (error) {
       console.log('Error', error)
     }
@@ -28,9 +32,9 @@ export default function Register() {
   return (
     <>
       <Container>
-        <form onSubmit={handleRegister}>
+        <form onSubmit={handleLogin}>
           <Wrapper>
-            <Title>Sign Up</Title>
+            <Title>Log In</Title>
             <Input
               type="text"
               placeholder="Username"
@@ -43,7 +47,7 @@ export default function Register() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit">Register</Button>
+            <Button type="submit">Login</Button>
           </Wrapper>
         </form>
       </Container>
