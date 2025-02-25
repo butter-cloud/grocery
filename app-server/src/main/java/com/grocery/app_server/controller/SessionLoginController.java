@@ -53,11 +53,8 @@ public class SessionLoginController {
     }
 
     @GetMapping("/home")
-    public String home(@SessionAttribute("userId") Long userId) {
-        if (userId == null) {
-            return "login required";
-        }
-        User loginUser = userService.getLoginUserById(userId);
+    public String home(HttpServletRequest request) {
+        User loginUser = (User) request.getAttribute("loginUser");
         if (loginUser == null) {
             return "login required";
         }
@@ -65,6 +62,21 @@ public class SessionLoginController {
 
         return "hello " + loginUser.getNickname() + ", this is session auth home!";
     }
+
+    // without interceptor
+//    @GetMapping("/home")
+//    public String home(@SessionAttribute("userId") Long userId) {
+//        if (userId == null) {
+//            return "login required";
+//        }
+//        User loginUser = userService.getLoginUserById(userId);
+//        if (loginUser == null) {
+//            return "login required";
+//        }
+//        log.info("[SessionLoginController] loginUser : {}", loginUser);
+//
+//        return "hello " + loginUser.getNickname() + ", this is session auth home!";
+//    }
 
     @GetMapping("/logout")
     public ResponseEntity<WebResponse<?>> logout(HttpServletRequest request) {
