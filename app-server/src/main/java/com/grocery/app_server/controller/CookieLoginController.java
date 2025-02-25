@@ -49,7 +49,6 @@ public class CookieLoginController {
             Cookie cookie = new Cookie("userId", user.getId().toString());
             cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
-            cookie.setSecure(false);
             response.addCookie(cookie);
             return ResponseEntity.ok(WebResponse.success(user, "success"));
         }
@@ -64,6 +63,7 @@ public class CookieLoginController {
     public ResponseEntity<WebResponse<?>> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("userId", null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
         response.addCookie(cookie);
         return ResponseEntity.ok(WebResponse.success(null, "success"));
     }
