@@ -14,6 +14,7 @@ export default function login() {
       loginId: username,
       password: password,
     }
+
     try {
       const res = await api.post('/cookie/login', data)
       if (res.status !== 200) {

@@ -44,9 +44,9 @@ export default function cookieHome() {
       }
     })
   }
+
   return (
     <>
-      {/*<MenuTitle title={'Cookie Home!'} />*/}
       <h3>{data ?? ''}</h3>
       <Button onClick={handleLogout}>logout</Button>
     </>

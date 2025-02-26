@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import api from '@/config/axiosInstance'
 import { Button, Container, Input, Title, Wrapper } from '@/ui/style/authStyle'
 
@@ -9,6 +9,17 @@ export default function join() {
   const [nickname, setNickname] = useState('')
   const [password, setPassword] = useState('')
   const [passwordCheck, setPasswordCheck] = useState('')
+
+  // 이미 로그인 된 상태이면 home으로 redirect
+  useEffect(() => {
+    api.get('/security/check-login').then((res) => {
+      console.log('isLoggedIn? ', res.data.data.loggedIn)
+      if (res.data.data.loggedIn) {
+        alert('이미 로그인된 상태입니다.')
+        window.location.replace('/auth/home')
+      }
+    })
+  }, [])
 
   const handleJoin = async (e: FormEvent) => {
     e.preventDefault()
@@ -19,13 +30,12 @@ export default function join() {
       passwordCheck: passwordCheck,
     }
     console.log(data)
-
     api
-      .post('/cookie/join', data)
+      .post('/security/join', data)
       .then((res) => {
         if (res.status === 200) {
           alert('회원가입이 완료되었습니다.')
-          window.location.replace('/auth/cookie/login')
+          window.location.replace('/auth/login')
         }
       })
       .catch((err) => {

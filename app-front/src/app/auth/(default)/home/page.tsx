@@ -17,34 +17,31 @@ const Button = styled.button`
   }
 `
 
-export default function securityAdmin() {
+export default function securityHome() {
   const [data, setData] = useState<string | null>(null)
 
   useEffect(() => {
     api
-      .get('/security/admin')
+      .get('/security/home')
       .then((res) => {
-        if (res.status === 200) {
-          setData(res.data)
+        console.log(res)
+        if (res.status !== 200) {
+          alert('Login Required')
+          window.location.replace('/auth/login')
         }
+        setData(res.data)
       })
       .catch((error) => {
-        if (error.status === 403) {
-          alert('admin 권한이 없습니다.')
-          window.location.replace('/auth/security/home')
-        }
-        if (error.status === 401) {
-          alert('Login Required')
-          window.location.replace('/auth/security/login')
-        }
         console.log(error)
+        alert('Login Required')
+        window.location.replace('/auth/login')
       })
   }, [])
 
   const handleLogout = () => {
     api.get('/security/logout').then((res) => {
       if (res.status === 200) {
-        window.location.replace('/auth/security/login')
+        window.location.replace('/auth/login')
       } else {
         console.log('Logout failed')
       }
