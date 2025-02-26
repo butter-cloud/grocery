@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -53,7 +54,22 @@ public class SecurityConfig {
                         .loginProcessingUrl("/security/login")
                         .usernameParameter("loginId")
                         .passwordParameter("password")
-                        .successHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_OK))
+                        .successHandler((request, response, authentication) -> {
+                                response.setStatus(HttpServletResponse.SC_OK);
+                                response.setContentType("application/json");
+                                response.setCharacterEncoding("UTF-8");
+
+                                // 사용자의 Role 가져오기
+                                String role = authentication.getAuthorities().stream()
+                                        .map(GrantedAuthority::getAuthority)
+                                        .findFirst()
+                                        .orElse(UserRole.USER.name()); // 기본값 USER로 설정
+
+                                // JSON 응답 작성
+                                String jsonResponse = "{\"role\": \"" + role + "\"}";
+                                response.getWriter().write(jsonResponse);
+                                response.getWriter().flush();
+                        })
                         .failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
                         .permitAll()
                 )

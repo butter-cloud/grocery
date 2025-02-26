@@ -1,8 +1,22 @@
 'use client'
 import api from '@/config/axiosInstance'
 import { ChangeEvent, useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-export default function New() {
+const Button = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 50px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #bcbbbb;
+  }
+`
+
+export default function adminHome() {
   const [data, setData] = useState<string | null>(null)
   const [product, setProduct] = useState({ name: '', price: 0 })
   const [products, setProducts] = useState<any[]>([])
@@ -11,20 +25,21 @@ export default function New() {
     api
       .get('/security/admin')
       .then((res) => {
+        console.log(res)
         if (res.status === 200) {
           setData(res.data)
         }
       })
       .catch((error) => {
+        console.log(error)
+        console.log('error status : ', error.status)
         if (error.status === 403) {
           alert('admin 권한이 없습니다.')
-          window.location.replace('/auth/security/home')
-        }
-        if (error.status === 401) {
+          window.location.replace('/auth/home')
+        } else if (error.status === 401) {
           alert('Login Required')
-          window.location.replace('/auth/security/login')
+          window.location.replace('/auth/login')
         }
-        console.log(error)
       })
   }, [])
 
@@ -56,10 +71,19 @@ export default function New() {
       })
   }
 
-  useEffect(() => {
-    getAllProducts()
-  }, [])
+  const handleLogout = () => {
+    api.get('/security/logout').then((res) => {
+      if (res.status === 200) {
+        window.location.replace('/auth/login')
+      } else {
+        console.log('Logout failed')
+      }
+    })
+  }
 
+  useEffect(() => {
+    // getAllProducts()
+  }, [])
   return (
     <>
       <h3>{data ?? ''}</h3>
@@ -86,6 +110,7 @@ export default function New() {
           </li>
         ))}
       </ul>
+      <Button onClick={handleLogout}>logout</Button>
     </>
   )
 }

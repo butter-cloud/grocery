@@ -27,49 +27,54 @@ export default function login() {
     console.log(data)
 
     securityApi
-        .post('/security/login', data)
-        .then((res) => {
-          if (res.status !== 200) {
-            console.log('Login failed')
-            alert('Login failed')
-            return
-          }
-          console.log('Login successful')
-          alert('Login successful')
+      .post('/security/login', data)
+      .then((res) => {
+        if (res.status !== 200) {
+          console.log('Login failed')
+          alert('Login failed')
+          return
+        }
+        console.log('Login successful')
+        const role = res.data.role
+        alert(`Login successful with role ${role}`)
+        if (role === 'ADMIN') {
+          window.location.replace('/admin/home')
+        } else {
           window.location.replace('/auth/home')
-        })
-        .catch((err) => {
-          if (err.status === 401) {
-            alert("아이디나 비밀번호가 틀렸습니다.")
-            setUsername('')
-            setPassword('')
-          }
-          console.log('Error', err)
-        })
+        }
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          alert('아이디나 비밀번호가 틀렸습니다.')
+          setUsername('')
+          setPassword('')
+        }
+        console.log('Error', err)
+      })
   }
 
   return (
-      <>
-        <Container>
-          <form onSubmit={handleLogin}>
-            <Wrapper>
-              <Title>Log In</Title>
-              <Input
-                  type="text"
-                  placeholder="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-              />
-              <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button type="submit">Login</Button>
-            </Wrapper>
-          </form>
-        </Container>
-      </>
+    <>
+      <Container>
+        <form onSubmit={handleLogin}>
+          <Wrapper>
+            <Title>Log In</Title>
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button type="submit">Login</Button>
+          </Wrapper>
+        </form>
+      </Container>
+    </>
   )
 }

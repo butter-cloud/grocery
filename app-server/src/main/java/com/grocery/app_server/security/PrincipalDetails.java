@@ -3,6 +3,7 @@ package com.grocery.app_server.security;
 import com.grocery.app_server.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -20,7 +21,7 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         log.info("[PrincipalDetails] getAuthorities : {}", user.getRole().name());
-        return Collections.singleton(() -> user.getRole().name());
+        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override

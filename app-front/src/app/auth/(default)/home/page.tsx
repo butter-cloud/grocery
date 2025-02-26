@@ -47,6 +47,7 @@ export default function securityHome() {
       }
     })
   }
+
   return (
     <>
       {data ? (
