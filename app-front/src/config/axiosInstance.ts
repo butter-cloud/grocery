@@ -9,6 +9,14 @@ const api = axios.create({
   },
 })
 
+export const securityApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+})
+
 //
 // api.interceptors.request.use(
 //   (config) => {
