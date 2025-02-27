@@ -1,7 +1,8 @@
 package com.grocery.app_server.config;
 
 import com.grocery.app_server.common.UserRole;
-import com.grocery.app_server.service.PrincipalDetailsService;
+import com.grocery.app_server.security.PrincipalDetailsService;
+import com.grocery.app_server.security.PrincipalOauth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 @Slf4j
@@ -27,10 +30,12 @@ public class SecurityConfig {
 
     private final CorsConfigurationSource corsConfigurationSource;
     private final PrincipalDetailsService principalDetailsService;
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
-    public SecurityConfig(CorsConfigurationSource corsConfigurationSource, PrincipalDetailsService principalDetailsService) {
+    public SecurityConfig(CorsConfigurationSource corsConfigurationSource, PrincipalDetailsService principalDetailsService, PrincipalOauth2UserService principalOauth2UserService) {
         this.corsConfigurationSource = corsConfigurationSource;
         this.principalDetailsService = principalDetailsService;
+        this.principalOauth2UserService = principalOauth2UserService;
     }
 
     @Bean
@@ -78,6 +83,16 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
+                )
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(principalOauth2UserService)
+                        )
+                        .successHandler((request, response, authentication) -> {
+                            SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/auth/home");
+                            successHandler.onAuthenticationSuccess(request, response, authentication);
+                        })
+                        .failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR))
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement

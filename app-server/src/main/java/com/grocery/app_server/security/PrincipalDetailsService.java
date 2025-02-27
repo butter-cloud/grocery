@@ -1,8 +1,7 @@
-package com.grocery.app_server.service;
+package com.grocery.app_server.security;
 
 import com.grocery.app_server.entity.User;
 import com.grocery.app_server.repository.UserRepository;
-import com.grocery.app_server.security.PrincipalDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -43,6 +42,6 @@ public class PrincipalDetailsService implements UserDetailsService {
 
         log.info("[PrincipalDetailsService] user : {}", user);
 
-        return new PrincipalDetails(user);
+        return new PrincipalDetails(user, null);
     }
 }

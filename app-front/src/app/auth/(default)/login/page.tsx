@@ -53,6 +53,10 @@ export default function login() {
       })
   }
 
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google'
+  }
+
   return (
     <>
       <Container>
@@ -72,6 +76,7 @@ export default function login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button type="submit">Login</Button>
+            <Button type="button" onClick={handleGoogleLogin}>Google Login</Button>
           </Wrapper>
         </form>
       </Container>
