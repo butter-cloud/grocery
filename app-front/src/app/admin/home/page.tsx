@@ -2,7 +2,6 @@
 import api from '@/config/axiosInstance'
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { NextResponse } from 'next/server'
 
 const Button = styled.button`
   padding: 0.5rem 1rem;

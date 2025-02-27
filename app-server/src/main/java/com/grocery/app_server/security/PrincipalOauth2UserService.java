@@ -5,7 +5,6 @@ import com.grocery.app_server.entity.User;
 import com.grocery.app_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
