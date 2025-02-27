@@ -2,6 +2,7 @@
 import api from '@/config/axiosInstance'
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { NextResponse } from 'next/server'
 
 const Button = styled.button`
   padding: 0.5rem 1rem;
@@ -17,7 +18,6 @@ const Button = styled.button`
 `
 
 export default function adminHome() {
-  const [data, setData] = useState<string | null>(null)
   const [product, setProduct] = useState({ name: '', price: 0 })
   const [products, setProducts] = useState<any[]>([])
 
@@ -27,7 +27,7 @@ export default function adminHome() {
       .then((res) => {
         console.log(res)
         if (res.status === 200) {
-          setData(res.data)
+          console.log(res)
         }
       })
       .catch((error) => {
@@ -84,9 +84,9 @@ export default function adminHome() {
   useEffect(() => {
     // getAllProducts()
   }, [])
+
   return (
     <>
-      <h3>{data ?? ''}</h3>
       <input
         type="text"
         name="name"
