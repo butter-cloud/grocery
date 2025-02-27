@@ -32,6 +32,13 @@ spring:
             scope:
             - email
             - profile
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: test-consumer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 logging:
   level:
