@@ -16,7 +16,7 @@ export const useProductDetailPageProps = () => {
     }
   }
 
-  const addToLocalCart = (dispatch, props, i) => {
+  const addToLocalCart = (dispatch, id, i) => {
     const localCart = localStorage.getItem('cart')
 
     let cart: TypeProduct[] = []
@@ -26,7 +26,7 @@ export const useProductDetailPageProps = () => {
     }
 
     const newItem = {
-      id: props.product.id,
+      id: id,
       quantity: i,
     } as TypeProduct
 

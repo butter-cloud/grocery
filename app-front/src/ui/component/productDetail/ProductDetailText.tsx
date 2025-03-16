@@ -39,6 +39,7 @@ const AddToCartButton = styled.button`
   border-radius: 50px;
   color: white;
   font-size: 1.5rem;
+  cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) =>
@@ -59,7 +60,7 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
   } = useProductDetailPageProps()
 
   const addItemToCart = (quantity: number) => {
-    addToLocalCart(dispatch, props, quantity)
+    addToLocalCart(dispatch, props.product.id, quantity)
     // addToServerCart(dispatch, props)
   }
 
@@ -82,7 +83,13 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />
-        <AddToCartButton onClick={() => {addItemToCart(quantity)}}>Add to cart +</AddToCartButton>
+        <AddToCartButton
+          onClick={() => {
+            addItemToCart(quantity)
+          }}
+        >
+          Add to cart +
+        </AddToCartButton>
       </Wrapper>
     </>
   )

@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import useProductDetailPageProps from '@/hook/useProductDetailPageProps'
+import { useDispatch } from 'react-redux'
 
 const Wrapper = styled.a`
   display: flex;
@@ -6,6 +8,7 @@ const Wrapper = styled.a`
   justify-content: center;
   margin: 0 10px;
   padding: 10px;
+  cursor: pointer;
 `
 
 const ProductImageWrapper = styled.div`
@@ -47,6 +50,12 @@ const AddToCartButton = styled.button`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.primary};
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+  }
 `
 
 const AddToCartText = styled.div`
@@ -71,12 +80,25 @@ export default function ProductCard({
   product,
 }: Readonly<{ product: TypeProduct }>) {
   const { id, name, price } = product
+  const { addToLocalCart } = useProductDetailPageProps()
+  const dispatch = useDispatch()
+
+  const handleWrapperClick = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault() // 클릭과 터치 이벤트에서 모두 기본 동작을 방지
+    // 다른 부분 클릭 시만 상품 상세 페이지로 이동
+    window.location.href = `/product/detail/${id}`
+  }
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    addToLocalCart(dispatch, id, 1)
+  }
   return (
     <>
-      <Wrapper href={`/product/detail/${id}`}>
+      <Wrapper onClick={handleWrapperClick}>
         <ProductImageWrapper>
           <ProductImage src="/image/apple.png" alt="Product" />
-          <AddToCartButton>
+          <AddToCartButton onClick={handleAddToCart}>
             <AddToCartText>Add to Cart</AddToCartText>
             <AddToCartIcon>+</AddToCartIcon>
           </AddToCartButton>
