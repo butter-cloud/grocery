@@ -16,7 +16,7 @@ export default function CartSuccessModal() {
         primaryButtonText={'View Cart'}
         secondaryButtonText={'Keep browsing'}
         primaryOnClick={() => {
-          window.location.href = '/'
+          window.location.href = '/cart'
         }}
         secondaryOnClick={() => {
           dispatch(closeModal())

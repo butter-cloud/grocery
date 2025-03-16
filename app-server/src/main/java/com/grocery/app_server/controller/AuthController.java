@@ -1,118 +1,82 @@
 package com.grocery.app_server.controller;
 
+import com.grocery.app_server.dto.AuthRequest;
+import com.grocery.app_server.dto.AuthResponse;
+import com.grocery.app_server.dto.RefreshRequest;
+import com.grocery.app_server.entity.RefreshToken;
 import com.grocery.app_server.entity.User;
-import com.grocery.app_server.service.TokenService;
-import com.grocery.app_server.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
+import com.grocery.app_server.repository.RefreshTokenRepository;
+import com.grocery.app_server.repository.UserRepository;
+import com.grocery.app_server.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
-
-    private final UserService userService;
-    private final TokenService tokenService;
-
-    public AuthController(UserService userService, TokenService tokenService) {
-        this.userService = userService;
-        this.tokenService = tokenService;
-    }
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
-        String role = user.getRole();
-
-        log.info("[AuthController] Registering user with username: {}", username);
-
-        if (username.isEmpty()|| password.isEmpty() || role.isEmpty()) {
-            return ResponseEntity.badRequest().body("Username, password, and role are required");
+    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("User already exists");
         }
 
-        try {
-            userService.registerUser(username, password, role);
-            return ResponseEntity.ok("User registered successfully");
-        }
-        catch (Exception e) {
-            log.error("[AuthController] Register - Error registering user", e);
-            return ResponseEntity.badRequest().body("Error registering user");
-        }
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok("User registered successfully");
     }
 
+    @Transactional
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        String username = user.getUsername();
-        String password = user.getPassword();
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        log.info("[AuthController] Logging in user with username: {}", username);
-
-        try {
-            Map<String, String> tokens = userService.loginUser(username, password, tokenService);
-            if (tokens != null) {
-                Map<String, String> response = new HashMap<>();
-                response.put("accessToken", tokens.get("accessToken"));
-
-                log.info("[AuthController] accessToken : {}", tokens.get("accessToken"));
-                log.info("[AuthController] refreshTokens : {}", tokens.get("refreshToken"));
-
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.SET_COOKIE, tokenService.refreshTokenCookieString(tokens.get("refreshToken")))
-                        .body(response);
-            } else {
-                return ResponseEntity.status(401).body("Invalid username or password");
-            }
-        } catch (UsernameNotFoundException e) {
-            log.error("User not found", e);
-            return ResponseEntity.status(401).body("User not found");
-        } catch (Exception e) {
-            log.error("Error logging in user", e);
-            return ResponseEntity.status(500).body("Error logging in user");
-        }
-    }
-
-    @GetMapping("/refresh")
-    public ResponseEntity<?> refresh(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
-
-        log.info("[AuthController] refresh - refreshToken : {}", refreshToken);
-
-        if (refreshToken != null) {
-            try {
-                Map<String, String> tokens = tokenService.refreshTokens(refreshToken);
-
-                if (tokens != null) {
-                    String newAccessToken = tokens.get("accessToken");
-                    String newRefreshToken = tokens.get("refreshToken");
-
-                    Map<String, String> response = new HashMap<>();
-                    response.put("accessToken", newAccessToken);
-
-                    return ResponseEntity.ok()
-                            .header(HttpHeaders.SET_COOKIE, newRefreshToken)
-                            .body(response);
-                } else {
-                    // tokenService refreshTokens failed
-                    log.error("[AuthController] refresh - tokenService refreshTokens returned null");
-                    return ResponseEntity.status(401).body(null);
-                }
-
-            } catch (Exception e) {
-                log.error("[AuthController] refresh - Error validating refresh token", e);
-                return ResponseEntity.status(401).body(null);
-            }
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, "Invalid password"));
         }
 
-        log.error("[AuthController] refresh - request refreshToken is null");
-        return ResponseEntity.status(401).body(null);
+        String accessToken = jwtUtil.generateAccessToken(user.getUsername());
+        RefreshToken refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
+
+        refreshTokenRepository.deleteByUsername(user.getUsername());
+        refreshTokenRepository.save(refreshToken);
+
+        return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken(), null));
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest request) {
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(request.getRefreshToken())
+                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+
+        if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
+            refreshTokenRepository.delete(refreshToken);
+            return ResponseEntity.badRequest().body(new AuthResponse(null, null, "Refresh token expired"));
+        }
+
+        String newAccessToken = jwtUtil.generateAccessToken(refreshToken.getUsername());
+        return ResponseEntity.ok(new AuthResponse(newAccessToken, null, null));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestBody RefreshRequest request) {
+        refreshTokenRepository.deleteByUsername(jwtUtil.getUsernameFromToken(request.getRefreshToken()));
+        return ResponseEntity.ok("Logged out successfully");
+    }
 }

@@ -65,7 +65,7 @@ export default function NavBar() {
           </NavLink>
 
           <NavLinks>
-            <NavLink href="/auth/login">
+            <NavLink href="/cart">
               <Button>Cart</Button>
             </NavLink>
           </NavLinks>
