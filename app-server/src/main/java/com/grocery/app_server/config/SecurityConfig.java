@@ -30,8 +30,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/refresh", "/auth/register", "/hello").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/auth/login", "/auth/refresh", "/auth/register", "/hello").permitAll()
+//                        .anyRequest().authenticated()
+                        .requestMatchers("/admin/**").authenticated() // '/admin/*' 경로만 인증 필요
+                        .anyRequest().permitAll() // 그 외 모든 경로는 허용
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
