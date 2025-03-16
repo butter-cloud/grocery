@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Logo from '@/ui/component/common/Logo'
 import DesktopMenu from '@/ui/component/common/DesktopMenu'
 import { isLogin } from '@/util/CommonUtil'
@@ -47,7 +47,19 @@ const Button = styled.button`
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+  const menuRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!isMenuOpen) return
+      if (event.screenX > 300) {
+        setIsMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
   return (
     <>
       <Wrapper>

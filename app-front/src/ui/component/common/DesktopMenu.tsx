@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { isLogin } from '@/util/CommonUtil'
+import { forwardRef } from 'react'
 
 const Menu = styled.div`
   position: absolute;
@@ -19,6 +20,10 @@ const MenuBar = styled.a`
   text-align: center;
   font-size: 2rem;
   font-style: italic;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.secondary};
+  }
 `
 
 const Button = styled.button`
@@ -38,7 +43,7 @@ const Button = styled.button`
   }
 `
 
-export default function DesktopMenu() {
+const DesktopMenu = () => {
   const handleLogout = () => {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
@@ -54,3 +59,5 @@ export default function DesktopMenu() {
     </>
   )
 }
+
+export default DesktopMenu
