@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { isLogin } from '@/util/CommonUtil'
 
 const Menu = styled.div`
   position: absolute;
@@ -20,12 +21,35 @@ const MenuBar = styled.a`
   font-style: italic;
 `
 
+const Button = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 80px;
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+
+  &:hover {
+    background-color: #bcbbbb;
+  }
+`
+
 export default function DesktopMenu() {
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    window.location.href = '/'
+  }
   return (
     <>
       <Menu>
         <MenuBar href={'/product/best'}>BestSeller</MenuBar>
         <MenuBar href={'/product/all'}>All Products</MenuBar>
+        {isLogin() && <Button onClick={handleLogout}>Logout</Button>}
       </Menu>
     </>
   )

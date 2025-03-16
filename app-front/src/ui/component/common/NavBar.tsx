@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import Logo from '@/ui/component/common/Logo'
 import DesktopMenu from '@/ui/component/common/DesktopMenu'
+import { isLogin } from '@/util/CommonUtil'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -68,6 +69,11 @@ export default function NavBar() {
             <NavLink href="/cart">
               <Button>Cart</Button>
             </NavLink>
+            {!isLogin() && (
+              <NavLink href="/auth/login">
+                <Button>Login</Button>
+              </NavLink>
+            )}
           </NavLinks>
         </Nav>
       </Wrapper>
