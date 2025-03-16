@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import api from '@/config/axiosInstance'
-import { setAccessToken } from '@/util/CookieHelper'
 import { Button, Container, Input, Title, Wrapper } from '@/ui/style/authStyle'
 
 export default function Login() {
@@ -11,22 +10,17 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    const data = {
-      username: username,
-      password: password,
-    }
     try {
-      const res = await api.post('/auth/login', data)
+      const res = await api.post('/auth/login', { username, password })
 
       if (res.status !== 200) {
         console.log('Login failed')
         alert('Login failed')
         return
       }
-
       console.log('Login successful')
-      alert('Login successful')
-      setAccessToken(res.data.accessToken)
+      localStorage.setItem('accessToken', res.data.accessToken)
+      localStorage.setItem('refreshToken', res.data.refreshToken)
 
       const params = new URLSearchParams(window.location.search)
       const redirectUrl = params.get('redirect') || '/' // redirect 값이 없으면 기본값으로 '/' 사용

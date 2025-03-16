@@ -1,7 +1,3 @@
-export function setAccessToken(accessToken: string) {
-  setCookie('accessToken', accessToken, 3600)
-}
-
 export function setCookie(name: string, value: string, expire: number) {
   const expires = new Date()
   expires.setTime(expires.getTime() + expire * 1000) // JavaScript's setTime() method requires milliseconds

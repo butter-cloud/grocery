@@ -15,7 +15,6 @@ export default function Register() {
     const data = {
       username: username,
       password: password,
-      role: role,
     }
     try {
       const res = await api.post('/auth/register', data)
