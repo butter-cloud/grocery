@@ -1,12 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from '@/config/axiosInstance'
-import {Button, Container, Input, Title, Wrapper, Link} from '@/ui/style/authStyle'
+import {
+  Button,
+  Container,
+  Input,
+  Title,
+  Wrapper,
+  Link,
+} from '@/ui/style/authStyle'
+import { isLogin } from '@/util/CommonUtil'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    if (isLogin()) {
+      alert("Already logged in!")
+      window.location.replace('/')
+    }
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
