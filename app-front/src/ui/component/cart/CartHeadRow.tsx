@@ -86,7 +86,9 @@ const QuantityButton = styled.button`
 export default function CartHeadRow({ item }) {
   const [data, setData] = useState({} as TypeProduct)
   const [quantity, setQuantity] = useState(item.quantity)
-  const { increaseCartQuantity, decreaseCartQuantity } = useCartProps()
+  const [isDeleted, setIsDeleted] = useState(false)
+  const { increaseCartQuantity, decreaseCartQuantity, deleteItem } =
+    useCartProps()
   const getProductDetail = () => {
     api
       .get(`/product/${item.id}`)
@@ -115,25 +117,32 @@ export default function CartHeadRow({ item }) {
     setQuantity(quantity - 1)
   }
 
+  const handleDeleteButton = () => {
+    deleteItem(item.id)
+    setIsDeleted(true)
+  }
+
   return (
-    <Wrapper>
-      <ProductImage src={'/image/apple.png'} />
-      <ProductInfo>
-        <ProductDetail>
-          <ProductName>{data.name}</ProductName>
-          <ProductPrice>{data.price}원</ProductPrice>
-        </ProductDetail>
-        <Quantity>
-          <QuantityButton onClick={handleMinusButton}>
-            <MinusIcon />
-          </QuantityButton>
-          {quantity}
-          <QuantityButton onClick={handlePlusButton}>
-            <PlusIcon />
-          </QuantityButton>
-        </Quantity>
-      </ProductInfo>
-      <RemoveButton>✕</RemoveButton>
-    </Wrapper>
+    !isDeleted && (
+      <Wrapper>
+        <ProductImage src={'/image/apple.png'} />
+        <ProductInfo>
+          <ProductDetail>
+            <ProductName>{data.name}</ProductName>
+            <ProductPrice>{data.price}원</ProductPrice>
+          </ProductDetail>
+          <Quantity>
+            <QuantityButton onClick={handleMinusButton}>
+              <MinusIcon />
+            </QuantityButton>
+            {quantity}
+            <QuantityButton onClick={handlePlusButton}>
+              <PlusIcon />
+            </QuantityButton>
+          </Quantity>
+        </ProductInfo>
+        <RemoveButton onClick={handleDeleteButton}>✕</RemoveButton>
+      </Wrapper>
+    )
   )
 }

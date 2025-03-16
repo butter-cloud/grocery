@@ -33,7 +33,7 @@ export default function CartPage() {
             return <CartHeadRow key={item.id} item={item} />
           })
         ) : (
-          <></>
+          <>장바구니에 상품이 없습니다.</>
         )}
         {/*<CartHeadRow />*/}
       </Wrapper>
