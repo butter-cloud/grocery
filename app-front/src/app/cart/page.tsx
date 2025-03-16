@@ -2,6 +2,7 @@
 
 import CartHeadRow from '@/ui/component/cart/CartHeadRow'
 import styled from 'styled-components'
+import { useEffect, useState } from 'react'
 
 const Wrapper = styled.div`
   margin: 50px;
@@ -15,10 +16,26 @@ const Wrapper = styled.div`
   }
 `
 export default function CartPage() {
+  const [localCart, setLocalCart] = useState<TypeProduct[]>([])
+
+  useEffect(() => {
+    const localCartString = localStorage.getItem('cart')
+    const localCartList = localCartString ? JSON.parse(localCartString) : []
+    console.log('localCartList ', localCartList)
+    setLocalCart(localCartList)
+  }, [localStorage])
+
   return (
     <>
       <Wrapper>
-        <CartHeadRow />
+        {localCart.length > 0 ? (
+          localCart.map((item) => {
+            return <CartHeadRow key={item.id} item={item} />
+          })
+        ) : (
+          <></>
+        )}
+        {/*<CartHeadRow />*/}
       </Wrapper>
     </>
   )

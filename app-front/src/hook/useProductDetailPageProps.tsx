@@ -16,7 +16,7 @@ export const useProductDetailPageProps = () => {
     }
   }
 
-  const addToLocalCart = (dispatch, props) => {
+  const addToLocalCart = (dispatch, props, i) => {
     const localCart = localStorage.getItem('cart')
 
     let cart: TypeProduct[] = []
@@ -27,14 +27,14 @@ export const useProductDetailPageProps = () => {
 
     const newItem = {
       id: props.product.id,
-      quantity: 1, // 새로운 아이템의 기본 quantity는 1
+      quantity: i,
     } as TypeProduct
 
     const itemIndex = cart.findIndex((item) => item.id === newItem.id)
 
     if (itemIndex !== -1) {
       // 이미 존재하는 아이템이면 quantity를 증가시킴
-      cart[itemIndex].quantity += 1
+      cart[itemIndex].quantity += i
     } else {
       // 새로운 아이템이면 장바구니에 추가
       cart.push(newItem)

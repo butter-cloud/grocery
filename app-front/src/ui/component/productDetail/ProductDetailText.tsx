@@ -58,8 +58,8 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
     addToServerCart,
   } = useProductDetailPageProps()
 
-  const addItemToCart = () => {
-    addToLocalCart(dispatch, props)
+  const addItemToCart = (quantity: number) => {
+    addToLocalCart(dispatch, props, quantity)
     // addToServerCart(dispatch, props)
   }
 
@@ -82,7 +82,7 @@ export default function ProductDetailText(props: { product: TypeProduct }) {
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />
-        <AddToCartButton onClick={addItemToCart}>Add to cart +</AddToCartButton>
+        <AddToCartButton onClick={() => {addItemToCart(quantity)}}>Add to cart +</AddToCartButton>
       </Wrapper>
     </>
   )

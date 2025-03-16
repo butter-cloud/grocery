@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import MinusIcon from '@/ui/icons/MinusIcon'
 import { theme } from '@/util/style/theme'
 import PlusIcon from '@/ui/icons/PlusIcon'
-import useProductDetailPageProps from '@/hook/useProductDetailPageProps'
 
 const QuantityWrapper = styled.div`
   display: flex;
