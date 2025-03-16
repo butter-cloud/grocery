@@ -36,7 +36,7 @@ export default function ProductDetail() {
 
   useEffect(() => {
     api
-      .get(`product/${params.id}`)
+      .get(`/product/${params.id}`)
       .then((res) => {
         console.log(res.data)
         setData(res.data)

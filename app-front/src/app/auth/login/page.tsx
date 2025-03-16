@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import api from '@/config/axiosInstance'
-import { Button, Container, Input, Title, Wrapper } from '@/ui/style/authStyle'
+import {Button, Container, Input, Title, Wrapper, Link} from '@/ui/style/authStyle'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -49,6 +49,9 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button type="submit">Login</Button>
+            <span>
+              Are you new here? <Link href="/auth/register">Join us!</Link>
+            </span>
           </Wrapper>
         </form>
       </Container>

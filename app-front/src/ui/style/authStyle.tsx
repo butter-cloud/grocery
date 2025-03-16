@@ -33,3 +33,10 @@ export const Input = styled.input`
 export const Button = styled.button`
   height: 30px;
 `
+
+export const Link = styled.a`
+  text-decoration: underline;
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+`
