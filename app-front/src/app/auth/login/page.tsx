@@ -18,7 +18,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLogin()) {
-      alert("Already logged in!")
+      alert('Already logged in!')
       window.location.replace('/')
     }
   }, [])
@@ -67,6 +67,9 @@ export default function Login() {
             <span>
               Are you new here? <Link href="/auth/register">Join us!</Link>
             </span>
+            <a href={'http://localhost:8080/oauth2/authorization/google'}>
+              Login with Google
+            </a>
           </Wrapper>
         </form>
       </Container>

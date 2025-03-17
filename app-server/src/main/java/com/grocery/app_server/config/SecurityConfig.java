@@ -1,10 +1,14 @@
 package com.grocery.app_server.config;
 
 import com.grocery.app_server.filter.JwtAuthenticationFilter;
+import com.grocery.app_server.service.PrincipalDetailsService;
+import com.grocery.app_server.service.PrincipalOAuth2UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,23 +28,32 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final PrincipalDetailsService principalDetailsService;
+    private final PrincipalOAuth2UserService principalOAuth2UserService;
 
-    // gw server
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/auth/login", "/auth/refresh", "/auth/register", "/hello").permitAll()
-//                        .anyRequest().authenticated()
                         .requestMatchers("/admin/**").authenticated() // '/admin/*' 경로만 인증 필요
                         .anyRequest().permitAll() // 그 외 모든 경로는 허용
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(principalOAuth2UserService)
+                        )
+                        .successHandler((request, response, authentication) -> {
+                            SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/");
+                            successHandler.onAuthenticationSuccess(request, response, authentication);
+                        })
+                        .failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR))
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider());
         return http.build();
     }
 
-    // gw server
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -53,15 +67,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
     }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(principalDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

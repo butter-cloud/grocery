@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5431/postgres
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
     driverClassName: org.postgresql.Driver
-    username: buttercookie
-    password: mettredulce
+    username: postgres
+    password: postgres1234
 
 frontend:
   url: http://localhost:3000
