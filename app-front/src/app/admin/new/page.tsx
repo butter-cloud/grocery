@@ -1,9 +1,86 @@
 'use client'
 import api from '@/config/axiosInstance'
 import { ChangeEvent, useEffect, useState } from 'react'
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  height: 85vh;
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+`
+
+const ImgContainer = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+`
+
+const Img = styled.img`
+  margin-top: 30px;
+  width: 300px;
+`
+
+const Line = styled.div`
+  width: 1px;
+  border-left: 1px solid #0a0a0a;
+  height: 100%;
+`
+
+const TextContainer = styled.div`
+  height: 100%;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+`
+
+const Title = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  font-style: italic;
+  margin-top: 30px;
+  margin-bottom: 20px;
+`
+
+const Input = styled.input`
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #0a0a0a;
+  border-radius: 10px;
+  font-size: 1rem;
+  min-width: 300px;
+`
+
+const Button = styled.button`
+  width: 60%;
+  padding: 10px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: ${({ theme }) => theme.colors.secondary};
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 300px;
+
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+const Text = styled.span`
+  font-size: 1rem;
+`
 
 export default function New() {
-  const [product, setProduct] = useState({ name: '', price: 0 })
+  const [product, setProduct] = useState({ name: '', price: '' })
   const [products, setProducts] = useState<any[]>([])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,30 +116,30 @@ export default function New() {
   }, [])
 
   return (
-    <>
-      <input
-        type="text"
-        name="name"
-        value={product.name}
-        onChange={handleInputChange}
-        placeholder="Product Name"
-      />
-      <input
-        type="number"
-        name="price"
-        value={product.price}
-        onChange={handleInputChange}
-        placeholder="Product Price"
-      />
-      <button onClick={addNewProduct}>Add item</button>
-      <br />
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - {product.price}
-          </li>
-        ))}
-      </ul>
-    </>
+    <Wrapper>
+      <TextContainer>
+        <Title>Add new item!</Title>
+        <Input
+          type="text"
+          name="name"
+          autoComplete="off"
+          value={product.name}
+          onChange={handleInputChange}
+          placeholder="Product Name"
+        />
+        <Input
+          type="text"
+          name="price"
+          value={product.price}
+          onChange={handleInputChange}
+          placeholder="Product Price"
+        />
+        <Button onClick={addNewProduct}>Add item</Button>
+      </TextContainer>
+      <ImgContainer>
+        <Img src={'/image/apple.png'} />
+        <Text>click to upload an image!</Text>
+      </ImgContainer>
+    </Wrapper>
   )
 }
