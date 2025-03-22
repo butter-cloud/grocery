@@ -7,8 +7,8 @@ const MainImage = styled.img`
   position: absolute;
   top: 0;
   z-index: -1;
-  opacity: 0.7; // (0: 완전 투명, 1: 불투명)
-  filter: brightness(110%);
+  opacity: 0.4; // (0: 완전 투명, 1: 불투명)
+  filter: brightness(100%);
 `
 
 const Main = styled.div`
@@ -28,10 +28,6 @@ const Text = styled.span`
   font-weight: bold;
   text-align: center;
   font-style: italic;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 `
 
 const InputContainer = styled.div`
@@ -39,10 +35,6 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-
-    &:hover {
-        transform: scale(1.1);
-    }
 `
 
 const Input = styled.input`

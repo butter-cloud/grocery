@@ -75,9 +75,13 @@ export default function Login() {
             <span>
               Are you new here? <Link href="/auth/register">Join us!</Link>
             </span>
-            <a href={'http://localhost:8080/oauth2/authorization/google'}>
-              <GoogleSignInButton />
-            </a>
+            <GoogleSignInButton
+              onClick={(e) => {
+                e.preventDefault()
+                window.location.href =
+                  'http://localhost:8080/oauth2/authorization/google'
+              }}
+            />
           </Wrapper>
         </form>
       </Container>
