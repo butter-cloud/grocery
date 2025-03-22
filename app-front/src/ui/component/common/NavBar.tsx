@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useEffect, useRef, useState } from 'react'
 import Logo from '@/ui/component/common/Logo'
-import DesktopMenu from '@/ui/component/common/DesktopMenu'
+import SideMenu from '@/ui/component/common/SideMenu'
 import { useLogin } from '@/hook/useLogin'
 
 const Wrapper = styled.div`
@@ -73,7 +73,7 @@ export default function NavBar() {
           >
             Menu
           </Button>
-          {isMenuOpen ? <DesktopMenu /> : <></>}
+          {isMenuOpen ? <SideMenu /> : <></>}
           <NavLink href="/">
             <Logo fontSize={'40px'} />
           </NavLink>

@@ -85,9 +85,20 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(newAccessToken, null, null));
     }
 
+    @Transactional
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestBody RefreshRequest request) {
-        refreshTokenRepository.deleteByUsername(jwtUtil.getUsernameFromToken(request.getRefreshToken()));
+    public ResponseEntity<String> logout(@CookieValue("refreshToken") String refreshToken) {
+        log.info("[AuthController] Logout request");
+
+        RefreshToken refreshTokenFromDB = refreshTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+
+        if (refreshTokenFromDB.getExpiryDate().isBefore(Instant.now())) {
+            refreshTokenRepository.delete(refreshTokenFromDB);
+            return ResponseEntity.badRequest().body("Refresh token expired");
+        }
+
+        refreshTokenRepository.deleteByUsername(refreshTokenFromDB.getUsername());
         return ResponseEntity.ok("Logged out successfully");
     }
 }

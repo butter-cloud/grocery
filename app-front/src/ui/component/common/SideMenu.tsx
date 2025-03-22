@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { isLogin } from '@/util/CommonUtil'
-import { forwardRef } from 'react'
+import api from "@/config/axiosInstance";
 
 const Menu = styled.div`
   position: absolute;
@@ -43,21 +43,21 @@ const Button = styled.button`
   }
 `
 
-const DesktopMenu = () => {
+const SideMenu = () => {
   const handleLogout = () => {
     localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+    api.post("/auth/logout")
     window.location.href = '/'
   }
   return (
     <>
       <Menu>
-        <MenuBar href={'/product/best'}>BestSeller</MenuBar>
         <MenuBar href={'/product/all'}>All Products</MenuBar>
+        <MenuBar href={'/product/best'}>BestSeller</MenuBar>
         {isLogin() && <Button onClick={handleLogout}>Logout</Button>}
       </Menu>
     </>
   )
 }
 
-export default DesktopMenu
+export default SideMenu
