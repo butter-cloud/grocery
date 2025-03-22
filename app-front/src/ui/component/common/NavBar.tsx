@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useEffect, useRef, useState } from 'react'
 import Logo from '@/ui/component/common/Logo'
 import DesktopMenu from '@/ui/component/common/DesktopMenu'
-import { isLogin } from '@/util/CommonUtil'
+import { useLogin } from '@/hook/useLogin'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -47,6 +47,7 @@ const Button = styled.button`
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { isLogin } = useLogin()
   const menuRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -81,7 +82,7 @@ export default function NavBar() {
             <NavLink href="/cart">
               <Button>Cart</Button>
             </NavLink>
-            {!isLogin() && (
+            {isLogin === false && (
               <NavLink href="/auth/login">
                 <Button>Login</Button>
               </NavLink>
