@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { isLogin } from '@/util/CommonUtil'
-import api from "@/config/axiosInstance";
+import api from '@/config/axiosInstance'
 
 const Menu = styled.div`
   position: absolute;
@@ -20,7 +20,8 @@ const MenuBar = styled.a`
   text-align: center;
   font-size: 2rem;
   font-style: italic;
-
+  font-weight: 500;
+  
   &:hover {
     color: ${({ theme }) => theme.colors.secondary};
   }
@@ -46,12 +47,13 @@ const Button = styled.button`
 const SideMenu = () => {
   const handleLogout = () => {
     localStorage.removeItem('accessToken')
-    api.post("/auth/logout")
+    api.post('/auth/logout')
     window.location.href = '/'
   }
   return (
     <>
       <Menu>
+        <MenuBar href={'/'}>Home</MenuBar>
         <MenuBar href={'/product/all'}>All Products</MenuBar>
         <MenuBar href={'/product/best'}>BestSeller</MenuBar>
         {isLogin() && <Button onClick={handleLogout}>Logout</Button>}
