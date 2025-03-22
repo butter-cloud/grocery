@@ -9,6 +9,7 @@ import { theme } from '@/util/style/theme'
 import { Provider } from 'react-redux'
 import store from '@/util/redux/store'
 import Modal from '@/ui/modals/Modal'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 export default function RootLayout({
   children,
@@ -20,11 +21,15 @@ export default function RootLayout({
       <body>
         <Provider store={store}>
           <ThemeProvider theme={theme}>
-            <StyledComponentsRegistry>
-              <NavBar />
-              <Modal />
-              {children}
-            </StyledComponentsRegistry>
+            <GoogleOAuthProvider
+              clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID!!}
+            >
+              <StyledComponentsRegistry>
+                <NavBar />
+                <Modal />
+                {children}
+              </StyledComponentsRegistry>
+            </GoogleOAuthProvider>
           </ThemeProvider>
         </Provider>
       </body>

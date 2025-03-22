@@ -8,7 +8,10 @@ import com.grocery.app_server.entity.User;
 import com.grocery.app_server.repository.RefreshTokenRepository;
 import com.grocery.app_server.repository.UserRepository;
 import com.grocery.app_server.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -57,20 +61,27 @@ public class AuthController {
         refreshTokenRepository.deleteByUsername(user.getUsername());
         refreshTokenRepository.save(refreshToken);
 
-        return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken.getToken(), null));
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken.getToken());
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                .body(new AuthResponse(accessToken, null, null));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest request) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(request.getRefreshToken())
+    public ResponseEntity<AuthResponse> refresh(@CookieValue("refreshToken") String refreshToken) {
+        RefreshToken refreshTokenFromDB = refreshTokenRepository.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
-        if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
-            refreshTokenRepository.delete(refreshToken);
+        if (refreshTokenFromDB.getExpiryDate().isBefore(Instant.now())) {
+            refreshTokenRepository.delete(refreshTokenFromDB);
             return ResponseEntity.badRequest().body(new AuthResponse(null, null, "Refresh token expired"));
         }
 
-        String newAccessToken = jwtUtil.generateAccessToken(refreshToken.getUsername());
+        String newAccessToken = jwtUtil.generateAccessToken(refreshTokenFromDB.getUsername());
         return ResponseEntity.ok(new AuthResponse(newAccessToken, null, null));
     }
 

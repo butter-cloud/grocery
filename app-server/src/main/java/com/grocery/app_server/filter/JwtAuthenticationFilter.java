@@ -13,9 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -25,8 +27,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
+    // 보안 적용 경로
+    private static final List<String> AUTH_PATHS = List.of("/admin/**");
+    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 보안이 필요없는 경로는 뛰어넘기. spring security 설정과 별개로 jwt는 검증됨
+        String path = request.getRequestURI();
+
+        boolean requiresAuth = AUTH_PATHS.stream()
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
+
+        if (!requiresAuth) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

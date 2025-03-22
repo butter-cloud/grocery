@@ -10,8 +10,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    console.log('interceptor working!')
+    console.log('request interceptor working!')
     const accessToken = localStorage.getItem('accessToken')
+    console.log('accessToken from local storage: ', accessToken)
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`
     }
@@ -43,9 +44,13 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken')
       if (refreshToken) {
         try {
-          const res = await axios.post('http://localhost:8080/auth/refresh', {
-            refreshToken,
-          })
+          const res = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+            null,
+            {
+              withCredentials: true,
+            },
+          )
           if (res.status === 200) {
             console.log('refresh 성공. new access token을 세팅합니다.')
             const { accessToken } = res.data

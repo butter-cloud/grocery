@@ -1,6 +1,7 @@
 package com.grocery.app_server.config;
 
 import com.grocery.app_server.filter.JwtAuthenticationFilter;
+import com.grocery.app_server.security.OAuth2SuccessHandler;
 import com.grocery.app_server.service.PrincipalDetailsService;
 import com.grocery.app_server.service.PrincipalOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final PrincipalDetailsService principalDetailsService;
     private final PrincipalOAuth2UserService principalOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,10 +45,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(principalOAuth2UserService)
                         )
-                        .successHandler((request, response, authentication) -> {
-                            SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler("http://localhost:3000/");
-                            successHandler.onAuthenticationSuccess(request, response, authentication);
-                        })
+                        .successHandler(oAuth2SuccessHandler)
                         .failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR))
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
