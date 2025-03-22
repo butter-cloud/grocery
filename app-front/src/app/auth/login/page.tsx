@@ -12,6 +12,7 @@ import {
 } from '@/ui/style/authStyle'
 import { isLogin } from '@/util/CommonUtil'
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
+import GoogleSignInButton from '@/ui/component/common/GoogleSignInButton'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -59,33 +60,24 @@ export default function Login() {
           <Wrapper>
             <Title>Log In</Title>
             <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <Button type="submit">Login</Button>
             <span>
               Are you new here? <Link href="/auth/register">Join us!</Link>
             </span>
             <a href={'http://localhost:8080/oauth2/authorization/google'}>
-              Login with Google
+              <GoogleSignInButton />
             </a>
-
-            {/*<GoogleLogin*/}
-            {/*  onSuccess={(credentialResponse) => {*/}
-            {/*    handleGoogleLogin(credentialResponse)*/}
-            {/*  }}*/}
-            {/*  onError={() => {*/}
-            {/*    console.log('google login error!')*/}
-            {/*  }}*/}
-            {/*/>*/}
           </Wrapper>
         </form>
       </Container>
