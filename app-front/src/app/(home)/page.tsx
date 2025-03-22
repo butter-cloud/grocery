@@ -65,7 +65,7 @@ const Button = styled.button`
 export default function Home() {
   return (
     <>
-      <MainImage src={'/image/peach.jpg'} />
+      <MainImage src={'/image/carrot.jpg'} />
       <Main>
         <Text>So, what are you looking for today?</Text>
         <InputContainer>
