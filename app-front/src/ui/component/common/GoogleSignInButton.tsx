@@ -1,9 +1,9 @@
 import React from 'react'
 import './GoogleSignInButton.css' // CSS 파일을 import
 
-const GoogleSignInButton = () => {
+const GoogleSignInButton = (props: { onClick: any }) => {
   return (
-    <button className="gsi-material-button">
+    <button className="gsi-material-button" onClick={props.onClick}>
       <div className="gsi-material-button-state"></div>
       <div className="gsi-material-button-content-wrapper">
         <div className="gsi-material-button-icon">
