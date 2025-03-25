@@ -1,9 +1,13 @@
 import { useLogin } from '@/hook/useLogin'
-import api from '@/api/axiosInstance'
 import cartApi from '@/api/cart/cartApi'
+import {ModalType} from "@/type/ModalType";
+import {openModal} from "@/util/redux/modalSlice";
+import {useDispatch} from "react-redux";
+
 
 const useCartProps = () => {
   const { isLogin } = useLogin()
+  const dispatch = useDispatch()
 
   /**
    * 장비구니 수량 증가.
@@ -12,8 +16,9 @@ const useCartProps = () => {
    *
    * @param productId
    * @param quantity default 1
+   * @param needModal default false
    */
-  const increaseCartQuantity = (productId, quantity = 1) => {
+  const increaseCartQuantity = (productId, quantity = 1, needModal = false) => {
     if (isLogin) {
       cartApi
         .increaseCartQuantity(productId, quantity)
@@ -35,6 +40,16 @@ const useCartProps = () => {
         cart[itemIndex].quantity += 1
       }
       localStorage.setItem('cart', JSON.stringify(cart))
+    }
+
+    // needModal true이면 모달 띄우기
+    if (needModal) {
+      dispatch(
+        openModal({
+          modalType: ModalType.CART_SUCCESS,
+          content: {},
+        }),
+      )
     }
   }
 

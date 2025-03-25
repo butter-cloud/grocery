@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import api from '@/api/axiosInstance'
 import { openModal } from '@/util/redux/modalSlice'
 import { ModalType } from '@/type/ModalType'
 
@@ -50,33 +49,12 @@ export const useProductDetailPageProps = () => {
     )
   }
 
-  const addToServerCart = (dispatch, props) => {
-    api
-      .post('/cart/add', {
-        id: props.product.id,
-        name: props.product.name,
-      })
-      .then((res) => {
-        console.log(res.data)
-        dispatch(
-          openModal({
-            modalType: ModalType.CART_SUCCESS,
-            content: {},
-          }),
-        )
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-
   return {
     quantity,
     setQuantity,
     increaseQuantity,
     decreaseQuantity,
     addToLocalCart,
-    addToServerCart,
   }
 }
 

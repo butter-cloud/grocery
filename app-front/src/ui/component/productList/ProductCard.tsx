@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-import useProductDetailPageProps from '@/hook/useProductDetailPageProps'
-import { useDispatch } from 'react-redux'
 import useCartProps from '@/hook/useCartProps'
 
 const Wrapper = styled.a`
@@ -81,8 +79,6 @@ export default function ProductCard({
   product,
 }: Readonly<{ product: TypeProduct }>) {
   const { id, name, price } = product
-  const { addToLocalCart } = useProductDetailPageProps()
-  const dispatch = useDispatch()
   const { increaseCartQuantity } = useCartProps()
 
   const handleWrapperClick = (e: React.MouseEvent | React.TouchEvent) => {
@@ -92,8 +88,8 @@ export default function ProductCard({
   }
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    increaseCartQuantity(id)
+    e.stopPropagation()   // 이벤트 버블링을 막아 wrapper의 클릭 이벤트가 발생하지 않도록 함
+    increaseCartQuantity(id, 1, true)
   }
 
   return (

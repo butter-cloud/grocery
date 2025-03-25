@@ -1,6 +1,5 @@
 'use client'
 
-import axios from 'axios'
 import ProductListPage from '@/ui/pages/ProductListPage'
 import { useEffect, useState } from 'react'
 import MenuTitle from '@/ui/component/common/MenuTitle'

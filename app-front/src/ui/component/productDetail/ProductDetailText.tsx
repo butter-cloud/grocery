@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import sampleProduct from '../../../../public/data/sampleProduct.json'
-import { useDispatch } from 'react-redux'
 import QuantityContainer from '@/ui/component/productDetail/QuantityContainer'
 import useProductDetailPageProps from '@/hook/useProductDetailPageProps'
+import useCartProps from '@/hook/useCartProps'
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,18 +50,12 @@ const AddToCartButton = styled.button`
 `
 
 export default function ProductDetailText(props: { product: TypeProduct }) {
-  const dispatch = useDispatch()
-  const {
-    quantity,
-    increaseQuantity,
-    decreaseQuantity,
-    addToLocalCart,
-    addToServerCart,
-  } = useProductDetailPageProps()
+  const { quantity, increaseQuantity, decreaseQuantity } =
+    useProductDetailPageProps()
+  const { increaseCartQuantity } = useCartProps()
 
   const addItemToCart = (quantity: number) => {
-    addToLocalCart(dispatch, props.product.id, quantity)
-    // addToServerCart(dispatch, props)
+    increaseCartQuantity(props.product.id, quantity, true)
   }
 
   return (
