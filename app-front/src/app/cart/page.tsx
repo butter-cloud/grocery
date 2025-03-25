@@ -51,7 +51,7 @@ export default function CartPage() {
       <Wrapper>
         {cartItems.length > 0 ? (
           cartItems.map((item) => {
-            return <CartRow key={item.id} item={item} />
+            return <CartRow key={item.productId} item={item} />
           })
         ) : (
           <>장바구니에 상품이 없습니다.</>

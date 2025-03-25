@@ -1,6 +1,6 @@
 interface TypeCartItem {
-    id: number
-    userId: number
+    id?: number | null
+    userId?: number | null
     productId: number
     quantity: number
 }

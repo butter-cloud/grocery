@@ -1,9 +1,8 @@
 import { useLogin } from '@/hook/useLogin'
 import cartApi from '@/api/cart/cartApi'
-import {ModalType} from "@/type/ModalType";
-import {openModal} from "@/util/redux/modalSlice";
-import {useDispatch} from "react-redux";
-
+import { ModalType } from '@/type/ModalType'
+import { openModal } from '@/util/redux/modalSlice'
+import { useDispatch } from 'react-redux'
 
 const useCartProps = () => {
   const { isLogin } = useLogin()
@@ -30,19 +29,30 @@ const useCartProps = () => {
         })
     } else {
       const localCart = localStorage.getItem('cart')
-      let cart: TypeProduct[] = []
+      let cart: TypeCartItem[] = []
 
+      // get cart item list from localStorage if it exists
       if (localCart) {
         cart = JSON.parse(localCart)
       }
-      const itemIndex = cart.findIndex((item) => item.id === productId)
+
+      // find if the product is already in the cart
+      const itemIndex = cart.findIndex((item) => item.productId === productId)
+
+      // if the product is already in the cart, increase the quantity
       if (itemIndex !== -1) {
         cart[itemIndex].quantity += 1
+      } else {
+        // if the product is not in the cart, add it
+        cart.push({
+          productId,
+          quantity,
+        })
       }
       localStorage.setItem('cart', JSON.stringify(cart))
     }
 
-    // needModal true이면 모달 띄우기
+    // show modal if needModal is true
     if (needModal) {
       dispatch(
         openModal({
@@ -73,15 +83,18 @@ const useCartProps = () => {
         })
     } else {
       const localCart = localStorage.getItem('cart')
-      let cart: TypeProduct[] = []
+      let cart: TypeCartItem[] = []
 
       if (localCart) {
         cart = JSON.parse(localCart)
       }
-      const itemIndex = cart.findIndex((item) => item.id === productId)
-      if (itemIndex !== -1) {
+      const itemIndex = cart.findIndex((item) => item.productId === productId)
+      // if the product exists in the cart and the quantity is greater than 1, decrease the quantity
+      if (itemIndex !== -1 && cart[itemIndex].quantity > 1) {
         cart[itemIndex].quantity -= 1
       }
+
+      // update the cart in localStorage
       localStorage.setItem('cart', JSON.stringify(cart))
     }
   }
@@ -109,12 +122,12 @@ const useCartProps = () => {
         })
     } else {
       const localCart = localStorage.getItem('cart')
-      let cart: TypeProduct[] = []
+      let cart: TypeCartItem[] = []
 
       if (localCart) {
         cart = JSON.parse(localCart)
       }
-      const itemIndex = cart.findIndex((item) => item.id === productId)
+      const itemIndex = cart.findIndex((item) => item.productId === productId)
       if (itemIndex !== -1) {
         cart.splice(itemIndex, 1)
       }
