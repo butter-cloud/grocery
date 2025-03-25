@@ -11,12 +11,13 @@ import {
   Link,
 } from '@/ui/style/authStyle'
 import { isLogin } from '@/util/CommonUtil'
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google'
 import GoogleSignInButton from '@/ui/component/common/GoogleSignInButton'
+import useCartProps from '@/hook/useCartProps'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { mergeCart } = useCartProps()
 
   useEffect(() => {
     console.log('clientId: ', process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID)
@@ -38,7 +39,7 @@ export default function Login() {
       }
       console.log('Login successful')
       localStorage.setItem('accessToken', res.data.accessToken)
-      localStorage.setItem('refreshToken', res.data.refreshToken)
+      mergeCart()
 
       const params = new URLSearchParams(window.location.search)
       const redirectUrl = params.get('redirect') || '/' // redirect 값이 없으면 기본값으로 '/' 사용
@@ -46,11 +47,6 @@ export default function Login() {
     } catch (error) {
       console.log('Error', error)
     }
-  }
-
-  const handleGoogleLogin = (credentialResponse: CredentialResponse) => {
-    console.log('google login success!')
-    console.log('credentialResponse: ', credentialResponse)
   }
 
   return (

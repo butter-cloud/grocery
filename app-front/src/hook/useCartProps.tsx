@@ -138,10 +138,27 @@ const useCartProps = () => {
     }
   }
 
+  const mergeCart = async () => {
+    const localCart = localStorage.getItem('cart')
+    if (localCart) {
+      const cart: TypeCartItem[] = JSON.parse(localCart)
+      cartApi
+        .mergeCart(cart)
+        .then((res) => {
+          console.log(res)
+          localStorage.removeItem('cart')
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+  }
+
   return {
     increaseCartQuantity,
     decreaseCartQuantity,
     deleteItem,
+    mergeCart,
   }
 }
 
