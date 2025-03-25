@@ -1,5 +1,5 @@
 'use client'
-import api from '@/config/axiosInstance'
+import api from '@/api/axiosInstance'
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 

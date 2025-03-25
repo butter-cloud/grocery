@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,7 +37,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").authenticated() // '/admin/*' 경로만 인증 필요
+                        .requestMatchers("/admin/**").authenticated() // '/admin/*' 경로 인증 필요
+                        .requestMatchers("/cart/**").authenticated() // '/cart/*' 경로 인증 필요
                         .anyRequest().permitAll() // 그 외 모든 경로는 허용
                 )
                 .oauth2Login(oauth2Login -> oauth2Login

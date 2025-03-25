@@ -1,5 +1,6 @@
 'use client'
 import styled from 'styled-components'
+import api from '@/api/axiosInstance'
 
 const MainImage = styled.img`
   width: 100%;

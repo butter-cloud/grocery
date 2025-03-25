@@ -1,5 +1,6 @@
 package com.grocery.app_server.filter;
 
+import com.grocery.app_server.service.PrincipalDetailsService;
 import com.grocery.app_server.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,21 +26,23 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final PrincipalDetailsService principalDetailsService;
 
     // 보안 적용 경로
-    private static final List<String> AUTH_PATHS = List.of("/admin/**");
+    private static final List<String> AUTH_PATHS = List.of("/admin/**", "/cart/**");
     private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 보안이 필요없는 경로는 뛰어넘기. spring security 설정과 별개로 jwt는 검증됨
         String path = request.getRequestURI();
+        log.info("[JwtAuthenticationFilter] request path : {}", path);
 
         boolean requiresAuth = AUTH_PATHS.stream()
                 .anyMatch(pattern -> pathMatcher.match(pattern, path));
 
         if (!requiresAuth) {
+            log.info("[JwtAuthenticationFilter] skip jwt authentication");
             filterChain.doFilter(request, response);
             return;
         }
@@ -53,9 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
         String username = jwtUtil.getUsernameFromToken(token);
+        log.info("[JwtAuthenticationFilter] username from token : {}", username);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = principalDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(token)) {
                 UsernamePasswordAuthenticationToken authentication =

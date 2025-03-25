@@ -1,6 +1,7 @@
 package com.grocery.app_server.security;
 
 import com.grocery.app_server.entity.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Slf4j
+@RequiredArgsConstructor
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private final User user;
@@ -24,9 +26,12 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        log.info("[PrincipalDetails] getAuthorities : {}", user.getRole().name());
-//        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()));
         return Collections.singleton(new SimpleGrantedAuthority("USER"));
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getUsername();
     }
 
     @Override
@@ -34,9 +39,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return user.getPassword();
     }
 
-    @Override
-    public String getUsername() {
-        return user.getUsername();
+    public Long getUserId() {
+        return user.getId();
     }
 
     // oauth2

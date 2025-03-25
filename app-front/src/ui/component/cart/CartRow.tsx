@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import api from '@/config/axiosInstance'
+import api from '@/api/axiosInstance'
 import { useEffect, useState } from 'react'
 import MinusIcon from '@/ui/icons/MinusIcon'
 import PlusIcon from '@/ui/icons/PlusIcon'
@@ -83,15 +83,16 @@ const QuantityButton = styled.button`
   height: 100%;
 `
 
-export default function CartHeadRow({ item }) {
+export default function CartRow({ item }) {
   const [data, setData] = useState({} as TypeProduct)
   const [quantity, setQuantity] = useState(item.quantity)
   const [isDeleted, setIsDeleted] = useState(false)
   const { increaseCartQuantity, decreaseCartQuantity, deleteItem } =
     useCartProps()
+
   const getProductDetail = () => {
     api
-      .get(`/product/${item.id}`)
+      .get(`/product/${item.productId}`)
       .then((res) => {
         setData(res.data)
       })
@@ -101,11 +102,12 @@ export default function CartHeadRow({ item }) {
   }
 
   useEffect(() => {
+    console.log('cart row for item ', item)
     getProductDetail()
   }, [])
 
   const handlePlusButton = () => {
-    increaseCartQuantity(item.id)
+    increaseCartQuantity(item.productId)
     setQuantity(quantity + 1)
   }
 
@@ -113,12 +115,12 @@ export default function CartHeadRow({ item }) {
     if (quantity === 1) {
       return
     }
-    decreaseCartQuantity(item.id)
+    decreaseCartQuantity(item.productId)
     setQuantity(quantity - 1)
   }
 
   const handleDeleteButton = () => {
-    deleteItem(item.id)
+    deleteItem(item.productId)
     setIsDeleted(true)
   }
 

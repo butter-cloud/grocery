@@ -2,7 +2,7 @@
 
 import styled from 'styled-components'
 import { isLogin } from '@/util/CommonUtil'
-import api from '@/config/axiosInstance'
+import api from '@/api/axiosInstance'
 import { usePathname } from 'next/navigation'
 
 const Menu = styled.div`

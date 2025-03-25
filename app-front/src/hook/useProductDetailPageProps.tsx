@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import api from '@/config/axiosInstance'
+import api from '@/api/axiosInstance'
 import { openModal } from '@/util/redux/modalSlice'
 import { ModalType } from '@/type/ModalType'
 

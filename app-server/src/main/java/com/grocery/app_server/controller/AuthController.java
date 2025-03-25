@@ -48,6 +48,7 @@ public class AuthController {
     @Transactional
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+        log.info("[AuthController] Login request from {}", request.getUsername());
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

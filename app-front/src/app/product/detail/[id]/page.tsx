@@ -1,6 +1,6 @@
 'use client'
 
-import api from '@/config/axiosInstance'
+import api from '@/api/axiosInstance'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
