@@ -30,8 +30,8 @@ public class ProductController {
         return productService.addProduct(product);
     }
 
-    @GetMapping("/{id}")
-    public Product getProductDetails(@PathVariable Long id) {
+    @GetMapping("/detail")
+    public Product getProductDetails(@RequestParam Long id) {
         log.info("Getting product details for id: {}", id);
         return productService.getProductDetails(id);
     }
