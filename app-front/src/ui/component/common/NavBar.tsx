@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import Logo from '@/ui/component/common/Logo'
 import SideMenu from '@/ui/component/common/SideMenu'
 import { useLogin } from '@/hook/useLogin'
+import { Button } from '@/ui/component/common/Button'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -29,19 +30,6 @@ const NavLink = styled.a`
   align-items: center;
   &:hover {
     color: #f6fb7a;
-  }
-`
-
-const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: white;
-  color: black;
-  border: 1px solid grey;
-  border-radius: 50px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #bcbbbb;
   }
 `
 

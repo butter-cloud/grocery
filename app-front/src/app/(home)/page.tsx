@@ -3,10 +3,11 @@
 import styled from 'styled-components'
 
 const MainImage = styled.img`
-  width: 100%;
-  height: 100vh;
+  width: 90vw;
+  height: 90vh;
   position: absolute;
-  top: 0;
+  top: 5vh;
+    left: 5vw;
   z-index: -1;
   opacity: 0.4; // (0: 완전 투명, 1: 불투명)
   filter: brightness(100%);
@@ -68,11 +69,11 @@ export default function Home() {
     <>
       <MainImage src={'/image/peach.jpg'} />
       <Main>
-        <Text>So, what are you looking for today?</Text>
-        <InputContainer>
-          <Input placeholder={''} autoFocus={true} />
-          <Button>🍐</Button>
-        </InputContainer>
+        {/*<Text>So, what are you looking for today?</Text>*/}
+        {/*<InputContainer>*/}
+        {/*  <Input placeholder={''} autoFocus={true} />*/}
+        {/*  <Button>🍐</Button>*/}
+        {/*</InputContainer>*/}
       </Main>
     </>
   )

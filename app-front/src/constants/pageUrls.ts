@@ -7,5 +7,7 @@ export const PAGE_URLS = {
   PRODUCT_ALL: '/product/all',
   PRODUCT_BEST: '/product/best',
   PRODUCT_DETAIL: (id: string | number) => `/product/detail/${id}`,
+  ORDER: '/order',
+
   ADMIN_NEW: '/admin/new',
 }

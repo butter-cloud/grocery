@@ -36,7 +36,7 @@ api.interceptors.response.use(
     // 403 에러이면 refresh 시도
     if (
       err.response &&
-      err.response.status === 403 &&
+      (err.response.status === 401 || err.response.status === 403) &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true // 무한 루프 방지
@@ -65,11 +65,11 @@ api.interceptors.response.use(
         } catch (refreshError) {
           console.error('refresh 실패: ', refreshError)
           localStorage.removeItem('accessToken')
-          localStorage.removeItem('refreshToken')
           window.location.href = '/auth/login'
         }
       } else {
         console.log('refresh token이 없습니다. 로그인 페이지로 이동합니다.')
+        localStorage.removeItem('accessToken')
         window.location.href = '/auth/login'
       }
     }

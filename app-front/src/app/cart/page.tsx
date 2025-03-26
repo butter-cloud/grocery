@@ -5,9 +5,11 @@ import { useEffect, useState } from 'react'
 import cartApi from '@/api/cart/cartApi'
 import { isLogin } from '@/util/CommonUtil'
 import CartRow from '@/ui/component/cart/CartRow'
+import { Button } from '@/ui/component/common/Button'
+import { PAGE_URLS } from '@/constants/pageUrls'
 
-const Wrapper = styled.div`
-  margin: 50px;
+const ItemWrapper = styled.div`
+  margin: 50px 50px 25px 50px;
   border-top: 1px solid ${({ theme }) => theme.colors.primary};
   border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
   padding: 20px;
@@ -48,7 +50,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Wrapper>
+      <ItemWrapper>
         {cartItems.length > 0 ? (
           cartItems.map((item) => {
             return <CartRow key={item.productId} item={item} />
@@ -56,7 +58,18 @@ export default function CartPage() {
         ) : (
           <>장바구니에 상품이 없습니다.</>
         )}
-      </Wrapper>
+      </ItemWrapper>
+
+      <Button
+        variant="primary"
+        width="100px"
+        onClick={() => {
+          window.location.href = PAGE_URLS.ORDER
+        }}
+        style={{ position: 'absolute', right: '50px' }}
+      >
+        Order
+      </Button>
     </>
   )
 }
