@@ -1,7 +1,6 @@
 'use client'
 
 import { FormEvent, useEffect, useState } from 'react'
-import api from '@/api/axiosInstance'
 import {
   Button,
   Container,
@@ -11,6 +10,8 @@ import {
   Wrapper,
 } from '@/ui/style/authStyle'
 import { isLogin } from '@/util/CommonUtil'
+import authApi from '@/api/auth/authApi'
+import { PAGE_URLS } from '@/constants/pageUrls'
 
 export default function Register() {
   const [username, setUsername] = useState('')
@@ -26,12 +27,9 @@ export default function Register() {
   const handleRegister = async (e: FormEvent) => {
     console.log('Register', username, password)
     e.preventDefault()
-    const data = {
-      username: username,
-      password: password,
-    }
     try {
-      const res = await api.post('/auth/register', data)
+      const res = await authApi.register(username, password)
+      console.log('Register', res)
       window.location.replace('/auth/login')
     } catch (error) {
       console.log('Error', error)
@@ -59,7 +57,7 @@ export default function Register() {
             <Button type="submit">Register</Button>
             <span>
               Do you already have an account?{' '}
-              <Link href="/auth/login">Log in!</Link>
+              <Link href={PAGE_URLS.LOGIN}>Log in!</Link>
             </span>
           </Wrapper>
         </form>

@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import axios from 'axios'
 import useCartProps from '@/hook/useCartProps'
+import authApi from '@/api/auth/authApi'
 
 export default function LoadingPage() {
   const { mergeCart } = useCartProps()
@@ -19,10 +19,8 @@ export default function LoadingPage() {
     console.log('redirectedFromSocialLogin: ', redirectedFromSocialLogin)
     if (redirectedFromSocialLogin) {
       console.log('Try to get access token by refresh token')
-      axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, null, {
-          withCredentials: true,
-        })
+      authApi
+        .refresh()
         .then((res) => {
           // accessToken이 있으면 저장
           if (res.data.accessToken) {

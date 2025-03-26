@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import api from '@/api/axiosInstance'
 import { useEffect, useState } from 'react'
 import MinusIcon from '@/ui/icons/MinusIcon'
 import PlusIcon from '@/ui/icons/PlusIcon'
-import useProductDetailPageProps from '@/hook/useProductDetailPageProps'
 import useCartProps from '@/hook/useCartProps'
+import productApi from '@/api/product/productApi'
 
 const Wrapper = styled.div`
   display: flex;
@@ -91,8 +90,8 @@ export default function CartRow({ item }) {
     useCartProps()
 
   const getProductDetail = () => {
-    api
-      .get(`/product/${item.productId}`)
+    productApi
+      .getProductDetail(item.productId)
       .then((res) => {
         setData(res.data)
       })

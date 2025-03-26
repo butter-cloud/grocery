@@ -1,7 +1,8 @@
 'use client'
-import api from '@/api/axiosInstance'
+
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import productApi from '@/api/product/productApi'
 
 const Wrapper = styled.div`
   height: 85vh;
@@ -80,7 +81,10 @@ const Text = styled.span`
 `
 
 export default function New() {
-  const [product, setProduct] = useState({ name: '', price: '' })
+  const [product, setProduct] = useState({
+    name: '',
+    price: 0,
+  } as TypeProduct)
   const [products, setProducts] = useState<any[]>([])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,8 +93,8 @@ export default function New() {
   }
 
   const addNewProduct = () => {
-    api
-      .post('/product/new', product)
+    productApi
+      .addNewProduct(product)
       .then((res) => {
         console.log(res)
         getAllProducts()
@@ -101,8 +105,8 @@ export default function New() {
   }
 
   const getAllProducts = () => {
-    api
-      .get('/product/all')
+    productApi
+      .getAllProducts()
       .then((res) => {
         setProducts(res.data)
       })

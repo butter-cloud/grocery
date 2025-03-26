@@ -1,11 +1,11 @@
 'use client'
 
-import api from '@/api/axiosInstance'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import ProductDetailImage from '@/ui/component/productDetail/ProductDetailImage'
 import ProductDetailText from '@/ui/component/productDetail/ProductDetailText'
+import productApi from '@/api/product/productApi'
 
 const Wrapper = styled.div`
   display: flex;
@@ -35,8 +35,8 @@ export default function ProductDetail() {
   const params = useParams<{ id: string }>()
 
   useEffect(() => {
-    api
-      .get(`/product/detail?=${params.id}`)
+    productApi
+      .getProductDetail(params.id)
       .then((res) => {
         console.log(res.data)
         setData(res.data)

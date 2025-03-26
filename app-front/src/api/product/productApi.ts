@@ -10,7 +10,7 @@ class ProductApi {
     return await api.get(API_URLS.PRODUCT_ALL)
   }
 
-  async getProductDetail(productId: number) {
+  async getProductDetail(productId) {
     return await api.get(API_URLS.PRODUCT_DETAIL, {
       params: {
         id: productId,

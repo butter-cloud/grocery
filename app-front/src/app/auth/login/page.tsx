@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import api from '@/api/axiosInstance'
 import {
   Button,
   Container,
@@ -14,6 +13,8 @@ import { isLogin } from '@/util/CommonUtil'
 import GoogleSignInButton from '@/ui/component/common/GoogleSignInButton'
 import useCartProps from '@/hook/useCartProps'
 import { GOOGLE_AUTH_LOGIN_URL } from '@/constants/apiUrls'
+import authApi from '@/api/auth/authApi'
+import { PAGE_URLS } from '@/constants/pageUrls'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -31,8 +32,7 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const res = await api.post('/auth/login', { username, password })
-
+      const res = await authApi.login(username, password)
       if (res.status !== 200) {
         console.log('Login failed')
         alert('Login failed')
@@ -70,7 +70,7 @@ export default function Login() {
             />
             <Button type="submit">Login</Button>
             <span>
-              Are you new here? <Link href="/auth/register">Join us!</Link>
+              Are you new here? <Link href={PAGE_URLS.LOGIN}>Join us!</Link>
             </span>
             <GoogleSignInButton
               onClick={(e) => {
