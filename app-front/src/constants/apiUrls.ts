@@ -20,3 +20,5 @@ export const API_URLS = {
   CART_DELETE: '/cart/delete',
   CART_MERGE: '/cart/merge',
 }
+
+export const GOOGLE_AUTH_LOGIN_URL = `${API_BASE_URL}/oauth2/authorization/google`

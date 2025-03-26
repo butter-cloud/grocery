@@ -13,6 +13,7 @@ import {
 import { isLogin } from '@/util/CommonUtil'
 import GoogleSignInButton from '@/ui/component/common/GoogleSignInButton'
 import useCartProps from '@/hook/useCartProps'
+import { GOOGLE_AUTH_LOGIN_URL } from '@/constants/apiUrls'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -74,8 +75,7 @@ export default function Login() {
             <GoogleSignInButton
               onClick={(e) => {
                 e.preventDefault()
-                window.location.href =
-                  'http://localhost:8080/oauth2/authorization/google'
+                window.location.href = GOOGLE_AUTH_LOGIN_URL
               }}
             />
           </Wrapper>
