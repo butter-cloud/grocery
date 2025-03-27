@@ -8,16 +8,26 @@ import CartRow from '@/ui/component/cart/CartRow'
 import { Button } from '@/ui/component/common/Button'
 import { PAGE_URLS } from '@/constants/pageUrls'
 
-const ItemWrapper = styled.div`
-  margin: 50px 50px 25px 50px;
-  border-top: 1px solid ${({ theme }) => theme.colors.primary};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
-  padding: 20px;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 50px;
 
   @media (max-width: 600px) {
     margin-right: 30px;
     margin-left: 30px;
   }
+`
+const ItemWrapper = styled.div`
+  margin: 50px 0 25px 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.primary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.primary};
+  padding: 20px;
+`
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<TypeCartItem[]>([])
@@ -50,26 +60,28 @@ export default function CartPage() {
 
   return (
     <>
-      <ItemWrapper>
-        {cartItems.length > 0 ? (
-          cartItems.map((item) => {
-            return <CartRow key={item.productId} item={item} />
-          })
-        ) : (
-          <>장바구니에 상품이 없습니다.</>
-        )}
-      </ItemWrapper>
-
-      <Button
-        variant="primary"
-        width="100px"
-        onClick={() => {
-          window.location.href = PAGE_URLS.ORDER
-        }}
-        style={{ position: 'absolute', right: '50px' }}
-      >
-        Order
-      </Button>
+      <Wrapper>
+        <ItemWrapper>
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => {
+              return <CartRow key={item.productId} item={item} />
+            })
+          ) : (
+            <>장바구니에 상품이 없습니다.</>
+          )}
+        </ItemWrapper>
+        <ButtonContainer>
+          <Button
+            variant="primary"
+            width="100px"
+            onClick={() => {
+              window.location.href = PAGE_URLS.ORDER
+            }}
+          >
+            Order
+          </Button>
+        </ButtonContainer>
+      </Wrapper>
     </>
   )
 }

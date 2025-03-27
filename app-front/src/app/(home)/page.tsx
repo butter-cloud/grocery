@@ -69,11 +69,11 @@ export default function Home() {
     <>
       <MainImage src={'/image/peach.jpg'} />
       <Main>
-        {/*<Text>So, what are you looking for today?</Text>*/}
-        {/*<InputContainer>*/}
-        {/*  <Input placeholder={''} autoFocus={true} />*/}
-        {/*  <Button>🍐</Button>*/}
-        {/*</InputContainer>*/}
+        <Text>So, what are you looking for today?</Text>
+        <InputContainer>
+          <Input placeholder={''} autoFocus={true} />
+          <Button>🍐</Button>
+        </InputContainer>
       </Main>
     </>
   )

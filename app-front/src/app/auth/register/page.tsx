@@ -2,16 +2,18 @@
 
 import { FormEvent, useEffect, useState } from 'react'
 import {
-  Button,
   Container,
   Input,
   Link,
-  Title,
+  RegisterTitle,
   Wrapper,
 } from '@/ui/style/authStyle'
 import { isLogin } from '@/util/CommonUtil'
 import authApi from '@/api/auth/authApi'
 import { PAGE_URLS } from '@/constants/pageUrls'
+import { Button } from '@/ui/component/common/Button'
+import { GOOGLE_AUTH_LOGIN_URL } from '@/constants/apiUrls'
+import GoogleSignInButton from '@/ui/component/common/GoogleSignInButton'
 
 export default function Register() {
   const [username, setUsername] = useState('')
@@ -41,7 +43,7 @@ export default function Register() {
       <Container>
         <form onSubmit={handleRegister}>
           <Wrapper>
-            <Title>Sign Up</Title>
+            <RegisterTitle>Register</RegisterTitle>
             <Input
               type="text"
               placeholder="Username"
@@ -55,6 +57,12 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button type="submit">Register</Button>
+            <GoogleSignInButton
+              onClick={(e) => {
+                e.preventDefault()
+                window.location.href = GOOGLE_AUTH_LOGIN_URL
+              }}
+            />
             <span>
               Do you already have an account?{' '}
               <Link href={PAGE_URLS.LOGIN}>Log in!</Link>

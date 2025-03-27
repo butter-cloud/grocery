@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import {
-  Button,
   Container,
   Input,
-  Title,
   Wrapper,
   Link,
+  LoginTitle,
 } from '@/ui/style/authStyle'
 import { isLogin } from '@/util/CommonUtil'
 import GoogleSignInButton from '@/ui/component/common/GoogleSignInButton'
@@ -15,6 +14,7 @@ import useCartProps from '@/hook/useCartProps'
 import { GOOGLE_AUTH_LOGIN_URL } from '@/constants/apiUrls'
 import authApi from '@/api/auth/authApi'
 import { PAGE_URLS } from '@/constants/pageUrls'
+import { Button } from '@/ui/component/common/Button'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -55,7 +55,7 @@ export default function Login() {
       <Container>
         <form onSubmit={handleLogin}>
           <Wrapper>
-            <Title>Log In</Title>
+            <LoginTitle>Login</LoginTitle>
             <Input
               type="text"
               placeholder="Username"
@@ -68,16 +68,19 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit">Login</Button>
-            <span>
-              Are you new here? <Link href={PAGE_URLS.LOGIN}>Join us!</Link>
-            </span>
+            <Button type="submit" variant={'primary'}>
+              Login
+            </Button>
+
             <GoogleSignInButton
               onClick={(e) => {
                 e.preventDefault()
                 window.location.href = GOOGLE_AUTH_LOGIN_URL
               }}
             />
+            <span>
+              Are you new here? <Link href={PAGE_URLS.REGISTER}>Join us!</Link>
+            </span>
           </Wrapper>
         </form>
       </Container>
