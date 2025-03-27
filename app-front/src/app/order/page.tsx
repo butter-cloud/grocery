@@ -1,14 +1,23 @@
 'use client'
 
 import styled from 'styled-components'
-import MenuTitle from '@/ui/component/common/MenuTitle'
 import { Button } from '@/ui/component/common/Button'
-import ShippingAddress from '@/ui/component/order/ShippingAddress'
+import ShippingAddressContainer from '@/ui/component/order/ShippingAddressContainer'
 import CollapsibleBox from '@/ui/component/common/CollapsibleBox'
-import { useState } from 'react'
+import TotalAmountContainer from '@/ui/component/order/TotalAmountContainer'
+import PaymentMethodContainer from '@/ui/component/order/PaymentMethodContainer'
+import CouponContainer from '@/ui/component/order/CouponContainer'
 
 const Wrapper = styled.div`
   margin: 50px;
+`
+
+const Title = styled.div`
+  font-family: sans-serif;
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 2rem;
 `
 
 const Container = styled.div`
@@ -41,48 +50,31 @@ const RightSection = styled.div`
 
   @media (max-width: 768px) {
     position: static;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
-`
-
-const SectionBox = styled.div`
-  padding: 1rem;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  background-color: white;
 `
 
 export default function OrderPage() {
   return (
     <>
       <Wrapper>
-        <MenuTitle title={'Checkout'} />
+        <Title>Checkout</Title>
 
         <Container>
           <LeftSection>
             <CollapsibleBox title={'Shipping Address'}>
-              <ShippingAddress />
+              <ShippingAddressContainer />
             </CollapsibleBox>
             <CollapsibleBox title={'Payment Method'}>
-              <ShippingAddress />
+              <PaymentMethodContainer />
             </CollapsibleBox>
             <CollapsibleBox title={'Coupons'}>
-              <ShippingAddress />
+              <CouponContainer />
             </CollapsibleBox>
           </LeftSection>
 
           <RightSection>
-            <h3>💰 Total Amount</h3>
-            <div style={{ margin: '1rem 0' }}>
-              <p>Product Total: 0</p>
-              <p>Discount: -0</p>
-              <p>
-                <strong>Total Amount: 0</strong>
-              </p>
-            </div>
-            <Button variant={'primary'} width={'100%'}>
-              Proceed to Payment
-            </Button>
+            <TotalAmountContainer />
           </RightSection>
         </Container>
       </Wrapper>
