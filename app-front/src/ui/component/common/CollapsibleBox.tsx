@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import { useTheme } from 'styled-components'
 
 const SectionBox = styled.div`
   padding: 1rem;
@@ -37,6 +40,7 @@ interface CollapsibleSectionProps {
 
 const CollapsibleBox = ({ title, children }: CollapsibleSectionProps) => {
   const [isOpen, setIsOpen] = useState(true)
+  const theme = useTheme()
 
   const toggleSection = () => {
     setIsOpen((prevState) => !prevState)
@@ -46,7 +50,11 @@ const CollapsibleBox = ({ title, children }: CollapsibleSectionProps) => {
     <SectionBox>
       <ToggleButton onClick={toggleSection}>
         <TitleWrapper>{title}</TitleWrapper>
-        <span>{isOpen ? '▲' : '▼'}</span>
+        {isOpen ? (
+          <KeyboardArrowUpIcon style={{ color: theme.colors.primary }} />
+        ) : (
+          <KeyboardArrowDownIcon style={{ color: theme.colors.primary }} />
+        )}
       </ToggleButton>
       <SectionContent $isOpen={isOpen}>{children}</SectionContent>
     </SectionBox>

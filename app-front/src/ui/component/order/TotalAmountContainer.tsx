@@ -3,7 +3,7 @@ import { Button } from '@/ui/component/common/Button'
 export const TotalAmountContainer = () => {
   return (
     <>
-      <h3>💰 Total Amount</h3>
+      <h3>Total Amount</h3>
       <div style={{ margin: '1rem 0' }}>
         <p>Product Total: 0</p>
         <p>Discount: -0</p>
