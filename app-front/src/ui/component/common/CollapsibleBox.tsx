@@ -17,6 +17,11 @@ const SectionContent = styled.div<{ $isOpen: boolean }>`
   border-radius: 8px;
 `
 
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const ToggleButton = styled.div`
   display: flex;
   justify-content: space-between;
@@ -26,7 +31,7 @@ const ToggleButton = styled.div`
 `
 
 interface CollapsibleSectionProps {
-  title: string
+  title: React.ReactNode
   children: React.ReactNode
 }
 
@@ -40,7 +45,7 @@ const CollapsibleBox = ({ title, children }: CollapsibleSectionProps) => {
   return (
     <SectionBox>
       <ToggleButton onClick={toggleSection}>
-        <span>{title}</span>
+        <TitleWrapper>{title}</TitleWrapper>
         <span>{isOpen ? '▲' : '▼'}</span>
       </ToggleButton>
       <SectionContent $isOpen={isOpen}>{children}</SectionContent>

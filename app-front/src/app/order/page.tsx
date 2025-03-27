@@ -1,7 +1,6 @@
 'use client'
 
 import styled from 'styled-components'
-import { Button } from '@/ui/component/common/Button'
 import ShippingAddressContainer from '@/ui/component/order/ShippingAddressContainer'
 import CollapsibleBox from '@/ui/component/common/CollapsibleBox'
 import TotalAmountContainer from '@/ui/component/order/TotalAmountContainer'
@@ -62,13 +61,35 @@ export default function OrderPage() {
 
         <Container>
           <LeftSection>
-            <CollapsibleBox title={'Shipping Address'}>
+            <CollapsibleBox
+              title={
+                <>
+                  {/*<GlobalIcon width={25} height={25} style={{ marginRight: 10 }} />*/}
+                  <span style={{ fontSize: 25, marginRight: 10 }}>🌳</span>
+                  Shipping Address
+                </>
+              }
+            >
               <ShippingAddressContainer />
             </CollapsibleBox>
-            <CollapsibleBox title={'Payment Method'}>
+            <CollapsibleBox
+              title={
+                <>
+                  <span style={{ fontSize: 25, marginRight: 10 }}>💳</span>
+                  Payment Method
+                </>
+              }
+            >
               <PaymentMethodContainer />
             </CollapsibleBox>
-            <CollapsibleBox title={'Coupons'}>
+            <CollapsibleBox
+              title={
+                <>
+                  <span style={{ fontSize: 25, marginRight: 10 }}>🍐</span>
+                  Coupons
+                </>
+              }
+            >
               <CouponContainer />
             </CollapsibleBox>
           </LeftSection>
