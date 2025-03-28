@@ -55,6 +55,10 @@ const AddToCartButton = styled.button`
     color: ${({ theme }) => theme.colors.primary};
     border: 1px solid ${({ theme }) => theme.colors.primary};
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 const AddToCartText = styled.div`
@@ -88,7 +92,7 @@ export default function ProductCard({
   }
 
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation()   // 이벤트 버블링을 막아 wrapper의 클릭 이벤트가 발생하지 않도록 함
+    e.stopPropagation() // 이벤트 버블링을 막아 wrapper의 클릭 이벤트가 발생하지 않도록 함
     increaseCartQuantity(id, 1, true)
   }
 

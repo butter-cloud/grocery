@@ -25,6 +25,7 @@ const Section = styled.section`
 
 const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
   const [currentSection, setCurrentSection] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   // 스크롤 이벤트 핸들러
   const handleScroll = (e: WheelEvent) => {
@@ -41,6 +42,20 @@ const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
     }
   }
 
+  // 모바일 화면 체크
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768) // 모바일 화면 크기 기준 (768px 이하)
+    }
+
+    checkMobile() // 초기 로드 시 체크
+    window.addEventListener('resize', checkMobile) // 화면 크기 변경 시 체크
+
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
+
   // 스크롤 이벤트 등록 및 정리
   useEffect(() => {
     window.addEventListener('wheel', handleScroll, { passive: true })
@@ -50,17 +65,31 @@ const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
   }, [currentSection])
 
   return (
-    <FullPageWrapper
-      style={{
-        transform: `translateY(-${currentSection * 100}vh)`, // 스크롤에 따라 위치 이동
-      }}
-    >
-      {sections.map((section, index) => (
-        <Section key={index} className="fullpage-section">
-          {section}
-        </Section>
-      ))}
-    </FullPageWrapper>
+    <>
+      {isMobile ? (
+        <>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {sections.map((section, index) => (
+              <Section key={index}>{section}</Section>
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          <FullPageWrapper
+            style={{
+              transform: `translateY(-${currentSection * 100}vh)`, // 스크롤에 따라 위치 이동
+            }}
+          >
+            {sections.map((section, index) => (
+              <Section key={index} className="fullpage-section">
+                {section}
+              </Section>
+            ))}
+          </FullPageWrapper>
+        </>
+      )}
+    </>
   )
 }
 
