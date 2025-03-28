@@ -11,16 +11,18 @@ const FullPageWrapper = styled.div`
   left: 0;
   width: 100vw;
   z-index: -999;
-  scrollbar-width: none;
 `
 
 const Section = styled.section`
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
   text-align: center;
+
+  @media (min-width: 768px) {
+    height: 100vh;
+  }
 `
 
 const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
