@@ -84,7 +84,7 @@ export default function NavBar() {
             </>
           )}
 
-          {/* center logo */}
+          {/*center logo*/}
           {(isMobile || isWide) && (
             <NavLink href="/">
               <Logo fontSize={'40px'} />

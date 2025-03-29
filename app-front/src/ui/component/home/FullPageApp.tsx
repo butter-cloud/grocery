@@ -2,6 +2,7 @@ import React, { useState, useEffect, JSX } from 'react'
 import styled from 'styled-components'
 import { useMediaQuery } from '@mui/material'
 import { LoadingSpinner } from '@/ui/component/common/LoadingSpinner'
+import { mobileMediaQuery, wideMediaQuery } from '@/constants/mediaConstants'
 
 const FullPageWrapper = styled.div`
   display: flex;
@@ -29,8 +30,8 @@ const Section = styled.section`
 
 const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
   const [currentSection, setCurrentSection] = useState(0)
-  const isMobile = useMediaQuery('(max-width:768px)')
-  const isWide = useMediaQuery('(min-width:768px)')
+  const isMobile = useMediaQuery(mobileMediaQuery)
+  const isWide = useMediaQuery(wideMediaQuery)
 
   // 스크롤 이벤트 핸들러
   const handleScroll = (e: WheelEvent) => {

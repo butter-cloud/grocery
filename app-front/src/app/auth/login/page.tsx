@@ -15,8 +15,13 @@ import { GOOGLE_AUTH_LOGIN_URL } from '@/constants/apiUrls'
 import authApi from '@/api/auth/authApi'
 import { PAGE_URLS } from '@/constants/pageUrls'
 import { Button } from '@/ui/component/common/Button'
+import { useMediaQuery } from '@mui/material'
+import { loadingQuery } from '@/constants/mediaConstants'
+import { LoadingSpinner } from '@/ui/component/common/LoadingSpinner'
 
 export default function Login() {
+  const isMediaQueryLoaded = useMediaQuery(loadingQuery)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const { mergeCart } = useCartProps()
@@ -52,38 +57,43 @@ export default function Login() {
 
   return (
     <>
-      <Container>
-        <form onSubmit={handleLogin}>
-          <Wrapper>
-            <LoginTitle>Login</LoginTitle>
-            <Input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button type="submit" variant={'primary'}>
-              Login
-            </Button>
+      {isMediaQueryLoaded ? (
+        <Container>
+          <form onSubmit={handleLogin}>
+            <Wrapper>
+              <LoginTitle>Login</LoginTitle>
+              <Input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Button type="submit" variant={'primary'}>
+                Login
+              </Button>
 
-            <GoogleSignInButton
-              onClick={(e) => {
-                e.preventDefault()
-                window.location.href = GOOGLE_AUTH_LOGIN_URL
-              }}
-            />
-            <span>
-              Are you new here? <Link href={PAGE_URLS.REGISTER}>Join us!</Link>
-            </span>
-          </Wrapper>
-        </form>
-      </Container>
+              <GoogleSignInButton
+                onClick={(e) => {
+                  e.preventDefault()
+                  window.location.href = GOOGLE_AUTH_LOGIN_URL
+                }}
+              />
+              <span>
+                Are you new here?{' '}
+                <Link href={PAGE_URLS.REGISTER}>Join us!</Link>
+              </span>
+            </Wrapper>
+          </form>
+        </Container>
+      ) : (
+        <LoadingSpinner />
+      )}
     </>
   )
 }
