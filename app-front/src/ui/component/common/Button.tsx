@@ -9,7 +9,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string // 예: '100px', '100%', 'auto' 등
 }
 
-const StyledButton = styled.button<{ variant: ButtonVariant; width?: string }>`
+const StyledButton = styled.button<{
+  variant: ButtonVariant
+  width?: string
+}>`
   padding: 0.5rem 1rem;
   border-radius: 50px;
   font-weight: 500;

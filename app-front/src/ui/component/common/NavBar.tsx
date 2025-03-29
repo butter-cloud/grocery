@@ -16,10 +16,10 @@ const Wrapper = styled.div`
 const Nav = styled.nav`
   display: flex;
   width: 100%;
-  justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  
+  justify-content: space-between;
+
   @media (max-width: 768px) {
     justify-content: center;
   }
@@ -42,6 +42,7 @@ const NavLink = styled.a`
 `
 
 export default function NavBar() {
+  const isMobile = useMediaQuery('(max-width:768px)')
   const isWide = useMediaQuery('(min-width:768px)')
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -59,6 +60,11 @@ export default function NavBar() {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isMenuOpen])
+
+  useEffect(() => {
+    console.log('isWide: ', isWide)
+  }, [])
+
   return (
     <>
       <Wrapper>
@@ -79,9 +85,11 @@ export default function NavBar() {
           )}
 
           {/* center logo */}
-          <NavLink href="/">
-            <Logo fontSize={'40px'} />
-          </NavLink>
+          {(isMobile || isWide) && (
+            <NavLink href="/">
+              <Logo fontSize={'40px'} />
+            </NavLink>
+          )}
 
           {/* right links */}
           {isWide && (
