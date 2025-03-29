@@ -1,5 +1,7 @@
 import React, { useState, useEffect, JSX } from 'react'
 import styled from 'styled-components'
+import { useMediaQuery } from '@mui/material'
+import { LoadingSpinner } from '@/ui/component/common/LoadingSpinner'
 
 const FullPageWrapper = styled.div`
   display: flex;
@@ -27,7 +29,8 @@ const Section = styled.section`
 
 const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
   const [currentSection, setCurrentSection] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+  const isMobile = useMediaQuery('(max-width:768px)')
+  const isWide = useMediaQuery('(min-width:768px)')
 
   // 스크롤 이벤트 핸들러
   const handleScroll = (e: WheelEvent) => {
@@ -43,20 +46,6 @@ const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
       }
     }
   }
-
-  // 모바일 화면 체크
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768) // 모바일 화면 크기 기준 (768px 이하)
-    }
-
-    checkMobile() // 초기 로드 시 체크
-    window.addEventListener('resize', checkMobile) // 화면 크기 변경 시 체크
-
-    return () => {
-      window.removeEventListener('resize', checkMobile)
-    }
-  }, [])
 
   // 스크롤 이벤트 등록 및 정리
   useEffect(() => {
@@ -76,7 +65,7 @@ const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
             ))}
           </div>
         </>
-      ) : (
+      ) : isWide ? (
         <>
           <FullPageWrapper
             style={{
@@ -90,6 +79,8 @@ const FullPageApp = ({ sections }: { sections: JSX.Element[] }) => {
             ))}
           </FullPageWrapper>
         </>
+      ) : (
+        <LoadingSpinner />
       )}
     </>
   )
