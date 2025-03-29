@@ -40,7 +40,7 @@ export const Carousel = ({ items, carouselWidth, itemWidth }) => {
 
   useEffect(() => {
     if (carouselRef.current) {
-      carouselRef.current.style.transform = `translateX(-${currentIndex * 200}px)`
+      carouselRef.current.style.transform = `translateX(-${currentIndex * itemWidth}px)`
     }
   }, [currentIndex, isTransitioning])
 

@@ -11,6 +11,7 @@ import store from '@/util/redux/store'
 import Modal from '@/ui/modals/Modal'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import gavency from '@/fonts/gavency'
+import mori from '@/fonts/mori'
 
 export default function RootLayout({
   children,
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html className={gavency.variable}>
+    <html className={`${gavency.variable} ${mori.variable}`}>
       <body>
         <Provider store={store}>
           <ThemeProvider theme={theme}>
