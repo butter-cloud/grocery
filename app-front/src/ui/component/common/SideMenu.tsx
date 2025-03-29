@@ -9,7 +9,7 @@ const Menu = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 300px;
+  width: 100vw;
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.primary};
   padding-top: 100px;

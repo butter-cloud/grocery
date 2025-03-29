@@ -5,6 +5,7 @@ import SideMenu from '@/ui/component/common/SideMenu'
 import { useLogin } from '@/hook/useLogin'
 import { Button } from '@/ui/component/common/Button'
 import { useMediaQuery } from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -21,7 +22,7 @@ const Nav = styled.nav`
   justify-content: space-between;
 
   @media (max-width: 768px) {
-    justify-content: center;
+    //justify-content: center;
   }
 `
 
@@ -33,12 +34,28 @@ const NavLinks = styled.div`
 const NavLink = styled.a`
   text-decoration: none;
   color: #333;
-  font-size: 1rem;
+  font-size: 2rem;
   display: flex;
   align-items: center;
   &:hover {
     color: #f6fb7a;
   }
+`
+
+const MobileMenuButton = styled.div`
+  //position: absolute;
+  //top: 19px;
+  //left: 25px;
+  // color: ${({ theme }) => theme.colors.primary};
+  // border: 2px solid ${({ theme }) => theme.colors.primary};
+  color: #000;
+  //border: 2px solid #000;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 999;
+  font-size: 2rem;
+  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 `
 
 export default function NavBar() {
@@ -70,7 +87,7 @@ export default function NavBar() {
       <Wrapper>
         <Nav>
           {/* menu button */}
-          {isWide && (
+          {isWide ? (
             <>
               <Button
                 onClick={() => {
@@ -80,30 +97,39 @@ export default function NavBar() {
               >
                 Menu
               </Button>
-              {isMenuOpen ? <SideMenu /> : <></>}
+              {isMenuOpen && <SideMenu />}
+            </>
+          ) : (
+            <>
+              <MobileMenuButton
+                onClick={() => {
+                  setIsMenuOpen(!isMenuOpen)
+                }}
+              >
+                🥦
+              </MobileMenuButton>
+              {isMenuOpen && <SideMenu />}
             </>
           )}
 
           {/*center logo*/}
-          {(isMobile || isWide) && (
+          {/*{(isMobile || isWide) && (*/}
             <NavLink href="/">
               <Logo fontSize={'40px'} />
             </NavLink>
-          )}
+          {/*// )}*/}
 
           {/* right links */}
-          {isWide && (
-            <NavLinks>
-              <NavLink href="/cart">
-                <Button>Cart</Button>
+          <NavLinks>
+            <NavLink href="/cart">
+              {isWide ? <Button>Cart</Button> : <>🛒</>}
+            </NavLink>
+            {isWide && isLogin === false && (
+              <NavLink href="/auth/login">
+                <Button>Login</Button>
               </NavLink>
-              {isLogin === false && (
-                <NavLink href="/auth/login">
-                  <Button>Login</Button>
-                </NavLink>
-              )}
-            </NavLinks>
-          )}
+            )}
+          </NavLinks>
         </Nav>
       </Wrapper>
     </>
