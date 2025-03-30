@@ -29,6 +29,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
 `
+
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<TypeCartItem[]>([])
 
@@ -72,7 +73,7 @@ export default function CartPage() {
         </ItemWrapper>
         <ButtonContainer>
           <Button
-            variant="primary"
+            variant={cartItems.length > 0 ? 'primary' : 'disabled'}
             width="100px"
             onClick={() => {
               window.location.href = PAGE_URLS.ORDER

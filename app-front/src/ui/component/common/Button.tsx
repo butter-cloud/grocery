@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-type ButtonVariant = 'default' | 'primary' | 'outline'
+type ButtonVariant = 'default' | 'primary' | 'outline' | 'disabled'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
@@ -63,6 +63,15 @@ const StyledButton = styled.button<{
       &:hover {
         background-color: #f0f0f0;
       }
+    `}
+
+  ${(props) =>
+    props.variant === 'disabled' &&
+    css`
+      background-color: #bcbbbb;
+      color: white;
+      border: none;
+      cursor: not-allowed;
     `}
 `
 
