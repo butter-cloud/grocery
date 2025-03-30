@@ -7,12 +7,14 @@ import productApi from '@/api/product/productApi'
 
 export default function ProductAll() {
   const [data, setData] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     productApi
       .getAllProducts()
       .then((response) => {
         setData(response.data)
+        setIsLoading(false)
       })
       .catch((error) => {
         console.log(error)
@@ -22,7 +24,7 @@ export default function ProductAll() {
   return (
     <>
       <MenuTitle title={'All Products'} />
-      <ProductListPage data={data ?? {}} />
+      <ProductListPage data={data ?? {}} isLoading={isLoading}/>
     </>
   )
 }

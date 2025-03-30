@@ -2,6 +2,7 @@
 
 import ProductCard from '@/ui/component/productList/ProductCard'
 import styled from 'styled-components'
+import ProductCardSkeleton from '@/ui/component/productList/ProductCardSkeleton'
 
 const ProductGrid = styled.div`
   display: grid;
@@ -26,14 +27,18 @@ const ProductGrid = styled.div`
   }
 `
 
-export default function ProductListPage({ data }) {
+export default function ProductListPage({ data, isLoading }) {
   console.log('data:', data)
   const productList = data || []
 
   return (
     <>
       <ProductGrid>
-        {productList.length > 0 ? (
+        {isLoading ? (
+          Array(8)
+            .fill(0)
+            .map((_, index) => <ProductCardSkeleton key={index} />)
+        ) : productList.length > 0 ? (
           productList.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))
