@@ -7,6 +7,7 @@ import { isLogin } from '@/util/CommonUtil'
 import CartRow from '@/ui/component/cart/CartRow'
 import { Button } from '@/ui/component/common/Button'
 import { PAGE_URLS } from '@/constants/pageUrls'
+import { EmptyCart } from '@/ui/component/cart/EmptyCart'
 
 const Wrapper = styled.div`
   display: flex;
@@ -68,7 +69,9 @@ export default function CartPage() {
               return <CartRow key={item.productId} item={item} />
             })
           ) : (
-            <>장바구니에 상품이 없습니다.</>
+            <>
+              <EmptyCart />
+            </>
           )}
         </ItemWrapper>
         <ButtonContainer>
