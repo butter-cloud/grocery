@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { isLogin } from '@/util/CommonUtil'
 import api from '@/api/axiosInstance'
 import { usePathname } from 'next/navigation'
+import { forwardRef } from 'react'
 
 const Menu = styled.div`
   position: absolute;
@@ -49,7 +50,7 @@ const Button = styled.button`
   }
 `
 
-const SideMenu = () => {
+const SideMenu = forwardRef<HTMLDivElement, {}>((props, ref) => {
   const pathname = usePathname()
 
   const handleLogout = () => {
@@ -72,6 +73,6 @@ const SideMenu = () => {
       {isLogin() && <Button onClick={handleLogout}>Logout</Button>}
     </Menu>
   )
-}
+})
 
 export default SideMenu

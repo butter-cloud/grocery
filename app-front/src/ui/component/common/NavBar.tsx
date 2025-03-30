@@ -5,7 +5,6 @@ import SideMenu from '@/ui/component/common/SideMenu'
 import { useLogin } from '@/hook/useLogin'
 import { Button } from '@/ui/component/common/Button'
 import { useMediaQuery } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,10 +19,6 @@ const Nav = styled.nav`
   align-items: center;
   padding: 1rem 2rem;
   justify-content: space-between;
-
-  @media (max-width: 768px) {
-    //justify-content: center;
-  }
 `
 
 const NavLinks = styled.div`
@@ -43,48 +38,48 @@ const NavLink = styled.a`
 `
 
 const MobileMenuButton = styled.div`
-  //position: absolute;
-  //top: 19px;
-  //left: 25px;
-  // color: ${({ theme }) => theme.colors.primary};
-  // border: 2px solid ${({ theme }) => theme.colors.primary};
   color: #000;
-  //border: 2px solid #000;
   width: 30px;
   height: 30px;
   cursor: pointer;
   z-index: 999;
   font-size: 2rem;
-  text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+  text-shadow:
+    -1px 0 #fff,
+    0 1px #fff,
+    1px 0 #fff,
+    0 -1px #fff;
 `
 
 export default function NavBar() {
-  const isMobile = useMediaQuery('(max-width:768px)')
   const isWide = useMediaQuery('(min-width:768px)')
-
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { isLogin } = useLogin()
   const menuRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!isMenuOpen) return
-      if (event.screenX > 300) {
-        setIsMenuOpen(false)
-      }
+
+  // 메뉴 외부 클릭 시 메뉴 닫기
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsMenuOpen(false)
     }
+  }
+
+  useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isMenuOpen])
-
-  useEffect(() => {
-    console.log('isWide: ', isWide)
   }, [])
+
+  const handleClick = () => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false)
+    }
+  }
 
   return (
     <>
-      <Wrapper>
+      <Wrapper onClick={handleClick}>
         <Nav>
           {/* menu button */}
           {isWide ? (
@@ -97,7 +92,7 @@ export default function NavBar() {
               >
                 Menu
               </Button>
-              {isMenuOpen && <SideMenu />}
+              {isMenuOpen && <SideMenu ref={menuRef} />}
             </>
           ) : (
             <>
@@ -108,16 +103,14 @@ export default function NavBar() {
               >
                 🥦
               </MobileMenuButton>
-              {isMenuOpen && <SideMenu />}
+              {isMenuOpen && <SideMenu ref={menuRef} />}
             </>
           )}
 
-          {/*center logo*/}
-          {/*{(isMobile || isWide) && (*/}
-            <NavLink href="/">
-              <Logo fontSize={'40px'} />
-            </NavLink>
-          {/*// )}*/}
+          {/* center logo */}
+          <NavLink href="/">
+            <Logo fontSize={'40px'} />
+          </NavLink>
 
           {/* right links */}
           <NavLinks>
