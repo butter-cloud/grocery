@@ -3,6 +3,10 @@ import { API_URLS } from '@/constants/apiUrls'
 import axios from 'axios'
 
 class AuthApi {
+  async hello() {
+    return await api.get(API_URLS.HELLO)
+  }
+
   async login(username: string, password: string) {
     return await api.post(API_URLS.LOGIN, { username, password })
   }
