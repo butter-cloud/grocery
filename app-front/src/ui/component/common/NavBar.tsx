@@ -39,7 +39,7 @@ const NavLink = styled.a`
   }
 `
 
-const MobileMenuButton = styled.div`
+const MenuButton = styled.div`
   color: #000;
   width: 30px;
   height: 30px;
@@ -86,25 +86,32 @@ export default function NavBar() {
           {/* menu button */}
           {isWide ? (
             <>
-              <Button
-                onClick={() => {
-                  setIsMenuOpen(!isMenuOpen)
-                }}
-                style={{ zIndex: 999 }}
-              >
-                Menu
-              </Button>
-              {isMenuOpen && <SideMenu ref={menuRef} />}
-            </>
-          ) : (
-            <>
-              <MobileMenuButton
+              {/*<Button*/}
+              {/*  onClick={() => {*/}
+              {/*    setIsMenuOpen(!isMenuOpen)*/}
+              {/*  }}*/}
+              {/*  style={{ zIndex: 999 }}*/}
+              {/*>*/}
+              {/*  Menu*/}
+              {/*</Button>*/}
+              <MenuButton
                 onClick={() => {
                   setIsMenuOpen(!isMenuOpen)
                 }}
               >
                 🥦
-              </MobileMenuButton>
+              </MenuButton>
+              {isMenuOpen && <SideMenu ref={menuRef} />}
+            </>
+          ) : (
+            <>
+              <MenuButton
+                onClick={() => {
+                  setIsMenuOpen(!isMenuOpen)
+                }}
+              >
+                🥦
+              </MenuButton>
               {isMenuOpen && <SideMenu ref={menuRef} />}
             </>
           )}
@@ -117,13 +124,14 @@ export default function NavBar() {
           {/* right links */}
           <NavLinks>
             <NavLink href="/cart">
-              {isWide ? <Button>Cart</Button> : <>🛒</>}
+              🛒
+              {/*{isWide ? <Button>Cart</Button> : <>🛒</>}*/}
             </NavLink>
-            {isWide && isLogin === false && (
-              <NavLink href="/auth/login">
-                <Button>Login</Button>
-              </NavLink>
-            )}
+            {/*{isWide && isLogin === false && (*/}
+            {/*  <NavLink href="/auth/login">*/}
+            {/*    <Button>Login</Button>*/}
+            {/*  </NavLink>*/}
+            {/*)}*/}
           </NavLinks>
         </Nav>
       </Wrapper>

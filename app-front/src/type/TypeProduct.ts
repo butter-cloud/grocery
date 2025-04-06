@@ -1,4 +1,4 @@
-interface TypeProduct {
+export interface TypeProduct {
   id: number
   imageUrl?: string
   name: string

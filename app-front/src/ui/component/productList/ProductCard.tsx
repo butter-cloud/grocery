@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import useCartProps from '@/hook/useCartProps'
+import { TypeProduct } from '@/type/TypeProduct'
 
 const Wrapper = styled.a`
   display: flex;
@@ -82,7 +83,7 @@ const ProductPrice = styled.div`
 export default function ProductCard({
   product,
 }: Readonly<{ product: TypeProduct }>) {
-  const { id, name, price } = product
+  const { id, name, price, imageUrl } = product
   const { increaseCartQuantity } = useCartProps()
 
   const handleWrapperClick = (e: React.MouseEvent | React.TouchEvent) => {
@@ -100,7 +101,7 @@ export default function ProductCard({
     <>
       <Wrapper onClick={handleWrapperClick}>
         <ProductImageWrapper>
-          <ProductImage src="/image/apple.png" alt="Product" />
+          <ProductImage src={imageUrl} alt="Product" />
           <AddToCartButton onClick={handleAddToCart}>
             <AddToCartText>Add to Cart</AddToCartText>
             <AddToCartIcon>+</AddToCartIcon>

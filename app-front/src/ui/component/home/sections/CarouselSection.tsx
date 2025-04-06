@@ -2,18 +2,69 @@ import Carousel from '@/ui/component/common/Carousel'
 import ProductCard from '@/ui/component/productList/ProductCard'
 import { useMediaQuery } from '@mui/material'
 import styled from 'styled-components'
+import { TypeProduct } from '@/type/TypeProduct'
 
 const products = [
-  { id: 1, name: 'apple', price: 1000 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1100 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1200 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1300 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1400 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1500 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1600 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1700 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1800 } as TypeProduct,
-  { id: 1, name: 'apple', price: 1900 } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1000,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1100,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1200,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1300,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1400,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1500,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1600,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1700,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1800,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
+  {
+    id: 1,
+    name: 'apple',
+    price: 1900,
+    imageUrl: '/image/apple.png',
+  } as TypeProduct,
 ]
 
 const Wrapper = styled.div`

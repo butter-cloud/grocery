@@ -4,6 +4,7 @@ import MinusIcon from '@/ui/icons/MinusIcon'
 import PlusIcon from '@/ui/icons/PlusIcon'
 import useCartProps from '@/hook/useCartProps'
 import productApi from '@/api/product/productApi'
+import { TypeProduct } from '@/type/TypeProduct'
 
 const Wrapper = styled.div`
   display: flex;
@@ -126,7 +127,7 @@ export default function CartRow({ item }) {
   return (
     !isDeleted && (
       <Wrapper>
-        <ProductImage src={'/image/apple.png'} />
+        <ProductImage src={data.imageUrl} />
         <ProductInfo>
           <ProductDetail>
             <ProductName>{data.name}</ProductName>

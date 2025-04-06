@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import ProductDetailImage from '@/ui/component/productDetail/ProductDetailImage'
 import ProductDetailText from '@/ui/component/productDetail/ProductDetailText'
 import productApi from '@/api/product/productApi'
+import { TypeProduct } from '@/type/TypeProduct'
 
 const Wrapper = styled.div`
   display: flex;

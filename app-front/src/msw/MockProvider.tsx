@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 export default function MockProvider() {
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
-      import('@/mocks/browser').then(({ worker }) => {
+      import('@/msw/browser').then(({ worker }) => {
         worker.start({
           onUnhandledRequest: 'bypass',
         })
