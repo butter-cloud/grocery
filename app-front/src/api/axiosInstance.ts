@@ -42,33 +42,26 @@ api.interceptors.response.use(
       originalRequest._retry = true // 무한 루프 방지
       console.log('403 Error. Refresh token을 이용해 재시도합니다.')
 
-      const refreshToken = localStorage.getItem('refreshToken')
-      if (refreshToken) {
-        try {
-          const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-            null,
-            {
-              withCredentials: true,
-            },
-          )
-          if (res.status === 200) {
-            console.log('refresh 성공. new access token을 세팅합니다.')
-            const { accessToken } = res.data
-            if (accessToken) {
-              localStorage.setItem('accessToken', accessToken)
-              originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
-              console.log('new access token으로 기존 요청을 다시 시도합니다.')
-              return api(originalRequest)
-            }
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+          null,
+          {
+            withCredentials: true,
+          },
+        )
+        if (res.status === 200) {
+          console.log('refresh 성공. new access token을 세팅합니다.')
+          const { accessToken } = res.data
+          if (accessToken) {
+            localStorage.setItem('accessToken', accessToken)
+            originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
+            console.log('new access token으로 기존 요청을 다시 시도합니다.')
+            return api(originalRequest)
           }
-        } catch (refreshError) {
-          console.error('refresh 실패: ', refreshError)
-          localStorage.removeItem('accessToken')
-          window.location.href = '/auth/login'
         }
-      } else {
-        console.log('refresh token이 없습니다. 로그인 페이지로 이동합니다.')
+      } catch (refreshError) {
+        console.error('refresh 실패: ', refreshError)
         localStorage.removeItem('accessToken')
         window.location.href = '/auth/login'
       }

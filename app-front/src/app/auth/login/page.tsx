@@ -38,6 +38,8 @@ export default function Login() {
     e.preventDefault()
     try {
       const res = await authApi.login(username, password)
+      console.log("login response: ", res)
+      console.log("accessToken: ", res.data.accessToken)
       if (res.status !== 200) {
         console.log('Login failed')
         alert('Login failed')
@@ -45,7 +47,7 @@ export default function Login() {
       }
       console.log('Login successful')
       localStorage.setItem('accessToken', res.data.accessToken)
-      mergeCart()
+      // mergeCart()
 
       const params = new URLSearchParams(window.location.search)
       const redirectUrl = params.get('redirect') || '/' // redirect 값이 없으면 기본값으로 '/' 사용
